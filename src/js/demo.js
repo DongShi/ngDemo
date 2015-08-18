@@ -4,7 +4,7 @@
  * Date: 8/4/2015 1:50 PM
  * Copyright (c) 2015 MicroStrategy Incorporated. All rights reserved.
  */
-var demoApp = angular.module('demoApp', ['demoService', 'ui.grid', 'nvd3', 'ngFileUpload']);
+var demoApp = angular.module('showcaseApp', ['demoService', 'ui.grid', 'nvd3', 'ngFileUpload']);
 
 demoApp.controller('demoController', ['$scope', '$http', function ($scope, $http) {
 
