@@ -81,8 +81,8 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
         }
     ).state('dashboard', {
             url : '/dashboard',
-            template:"Hello dashboard <a ui-sref='cards'> go to cards </a>"
-
+            //template:"Hello dashboard <a ui-sref='cards'> go to cards </a>"
+            templateUrl: '/src/dashboard/dashboard.tmpl.html'
         }
     ).state('cards', {
             url : '/cards',
@@ -91,7 +91,7 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
         }
     ).state('connectors', {
             url : '/connectors',
-            template:"Hello cards <a ui-sref='index'> go to index</a>"
+            template:"Hello connectors <a ui-sref='index'> go to index</a>"
 
         }
     );
