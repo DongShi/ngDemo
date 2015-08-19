@@ -71,7 +71,7 @@ showcaseApp.run(
 //configurate routing & state.
 showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
 
-    $urlRouterProvider.when('', '/welcome')
+    $urlRouterProvider.when('', '/index')
         .otherwise('/index');
 
     $stateProvider.state(
@@ -91,7 +91,7 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
         }
     ).state('connectors', {
             url : '/connectors',
-            template:"Hello cards <a ui-sref='connectors'> go to connectors</a>"
+            template:"Hello cards <a ui-sref='index'> go to index</a>"
 
         }
     );
