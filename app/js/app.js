@@ -82,7 +82,7 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
     ).state('dashboard', {
             url : '/dashboard',
             //template:"Hello dashboard <a ui-sref='cards'> go to cards </a>"
-            templateUrl: '/app/dashboard/dashboard.tmpl.html'
+            templateUrl: '/ngDemo/app/dashboard/dashboard.tmpl.html'
         }
     ).state('cards', {
             url : '/cards',
