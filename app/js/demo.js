@@ -54,7 +54,8 @@ demoApp.controller('demoController', ['$scope', '$http', function ($scope, $http
                 var resultData = data;
                 $scope[dataTag] = resultData;
 
-            }).error(function () {
+            }).error(function (err) {
+                    window.log(err);
 
             });
         };
