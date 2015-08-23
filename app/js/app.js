@@ -57,7 +57,7 @@
 
 
 //demo
-var showcaseApp = angular.module('showcaseApp', ["ui.router"]);
+var showcaseApp = angular.module('showcaseApp', ["ui.router", "dashboard"]);
 
 //pre-configuration.
 showcaseApp.run(
@@ -68,6 +68,12 @@ showcaseApp.run(
     }]
 );
 
+
+//constants, if any.
+showcaseApp.constant('_ALERT_CONFIG_', {Max: 10});
+
+
+
 //configurate routing & state.
 showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
 
@@ -77,12 +83,7 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
     $stateProvider.state(
         'index', {
             url : '/index',
-            template:"Hello world <a ui-sref='dashboard'> go to dashboard </a>"
-        }
-    ).state('dashboard', {
-            url : '/dashboard',
-            //template:"Hello dashboard <a ui-sref='cards'> go to cards </a>"
-            templateUrl: '/ngDemo/app/dashboard/dashboard.tmpl.html'
+            template:"Hello world <a ui-sref='dashboard.datasetInfo'> go to dashboard </a>"
         }
     ).state('cards', {
             url : '/cards',
