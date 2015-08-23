@@ -1,0 +1,10 @@
+[
+    {
+        "id": "000f",
+        "units" : [
+            {"uName":"State", "uId": "U123", "axis": "row", "type": "a"},
+            {"uName":"Customer Gender", "uId": "U345", "axis": "row", "type": "a"},
+            {"uName":"Profit", "uId": "U221", "axis": "col", "type": "m"}
+        ]
+    }
+]

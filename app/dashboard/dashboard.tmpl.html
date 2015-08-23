@@ -1,5 +1,34 @@
-<div class= "data-set-panel">left panel </div>
+
+
+<button ng-click="updateData('json')" class="btn btn-primary"> click me for raw json</button>
+<button ng-click="updateData('grid')" class="btn btn-primary"> click me for grid display</button>
+<button ng-click="updateData('graph')" class="btn btn-primary"> click me for graph display</button>
+
+
+<hr>
+
+<div class= "data-set-panel"> showing datasetInformation
+
+    <div ui-view = 'datasetInfo'></div>
+
+</div>
+
+
+
 <div class = "dropzone-panbel">drag and drop</div>
 <div class = "filter-panel"> filter panel </div>
-<div class = "viz-panel">right panel</div>
+
+
+
+<div class = "viz-panel">
+
+
+    <div ui-view></div>
+
+
+
+</div>
+
+
+
 
