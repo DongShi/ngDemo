@@ -10,7 +10,7 @@
  * Date: 8/4/2015 1:50 PM
  * Copyright (c) 2015 MicroStrategy Incorporated. All rights reserved.
  */
-var vizTestApp = angular.module('vizTestApp', []);
+var vizTestApp = angular.module('vizTestApp', ['nvd3ChartDirectives']);
 
 
 vizTestApp.controller('vizController', ['$scope', function($scope){
@@ -505,12 +505,6 @@ vizTestApp.controller('vizController', ['$scope', function($scope){
             ]
         }
     ];
-
-    $scope.gridOptions = {
-        data: [{a: 1, b: 2}],
-        columnDefs : ['a', 'b']
-    }
-
 
     $scope.colorFunction = function() {
         return function(d, i) {

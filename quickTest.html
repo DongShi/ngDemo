@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html ng-app="vizTestApp">
+<html ng-app="demoApp">
 <head lang="en">
     <meta charset="UTF-8">
     <title>viz testing</title>
 
-    <!--<link href="css/bootstrap.css" rel="stylesheet">-->
-    <!--<link href="css/app.css" rel="stylesheet">-->
-    <!--<link href="css/animations.css" rel="stylesheet">-->
-    <!--<link href="css/ui-grid.css" rel="stylesheet">-->
-    <!--<link href="css/nv.d3.css" rel="stylesheet">-->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/animations.css" rel="stylesheet">
+    <link href="css/ui-grid.css" rel="stylesheet">
+    <link href="css/nv.d3.css" rel="stylesheet">
 
 
     <script src="lib/jquery.js"></script>
@@ -21,43 +21,38 @@
     <!--grid library-->
     <script src="lib/uiGrid/ui-grid.js"></script>
 
-    <script src="app/js/quickTest.js"></script>
+    <!--graph library-->
+    <script src="lib/d3/d3.js"></script>
+    <script src="lib/d3/nv.d3.js"></script>
+    <script src="lib/d3/angular-nvd3.js"></script>
+    <script src = "lib/d3/angularjs-nvd3-directives.js" ></script>
 
 
-    <!--&lt;!&ndash;graph library&ndash;&gt;-->
-    <!--<script src="lib/d3/d3.js"></script>-->
-    <!--<script src="lib/d3/nv.d3.js"></script>-->
-    <!--<script src="lib/d3/angular-nvd3.js"></script>-->
-    <!--<script src = "lib/d3/angularjs-nvd3-directives.js" ></script>-->
+    <!--common: file uploader-->
+    <script src = "lib/uploader/ng-file-upload.js" ></script>
 
 
-    <!--&lt;!&ndash;common: file uploader&ndash;&gt;-->
-    <!--<script src = "lib/uploader/ng-file-upload.js" ></script>-->
-
-
-    <!--<script src="js/services.js"></script>-->
-    <!--<script src="js/demo.js"></script>-->
+    <script src="js/services.js"></script>
+    <script src="js/demo.js"></script>
 
 
 
 </head>
-<body ng-controller="vizController">
+<body ng-controller="demoController">
 
 
     <section class="alert-warning">
 
-        <div ui-grid = gridOptions>
-            demo for grid and graph display.
-    </div>
+        demo for grid and graph display.
 
     </section>
 
 
 
-    <!--<button ng-controller="uploaderController" ngf-select ng-model="upFile" class="btn btn-primary"> click me for uploading data</button>-->
-    <!--<button ng-click="updateData('json')" class="btn btn-primary"> click me for raw json</button>-->
-    <!--<button ng-click="updateData('grid')" class="btn btn-primary"> click me for grid display</button>-->
-    <!--<button ng-click="updateData('graph')" class="btn btn-primary"> click me for graph display</button>-->
+    <button ng-controller="uploaderController" ngf-select ng-model="upFile" class="btn btn-primary"> click me for uploading data</button>
+    <button ng-click="updateData('json')" class="btn btn-primary"> click me for raw json</button>
+    <button ng-click="updateData('grid')" class="btn btn-primary"> click me for grid display</button>
+    <button ng-click="updateData('graph')" class="btn btn-primary"> click me for graph display</button>
 
 
     <hr>
@@ -98,14 +93,34 @@
     <!--</div>-->
     <!--<div ng-controller="graphViewController">-->
 
-    <!--<div ng-controller="graphViewController">-->
-        <!--<div class="angular-nvd3-chart-container" ng-repeat='type in graphTypes'>-->
-            <!--<draw-graph c-type = '{{type}}' > GRAPH PLACEHOLDER </draw-graph>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div ng-controller="graphViewController">
+        <div class="angular-nvd3-chart-container" ng-repeat='type in graphTypes'>
+            <draw-graph c-type = '{{type}}' > GRAPH PLACEHOLDER </draw-graph>
+        </div>
+    </div>
 
 
 </body>
 
+<!--<script>-->
+
+    <!--$(document).ready(function(){-->
+
+        <!--$("#pivContainer").pivotUI(-->
+                <!--[-->
+                    <!--{color: "blue", shape: "circle"},-->
+                    <!--{color: "red", shape: "triangle"}-->
+                <!--],-->
+                <!--{-->
+                    <!--rows: ["color"],-->
+                    <!--cols: ["shape"]-->
+                <!--}-->
+        <!--);-->
+
+
+
+    <!--});-->
+
+<!--</script>-->
 
 </html>
