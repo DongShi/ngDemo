@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ng-tutorial.iml" filepath="$PROJECT_DIR$/.idea/ng-tutorial.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ngDemo.iml" filepath="$PROJECT_DIR$/.idea/ngDemo.iml" />
     </modules>
   </component>
 </project>
