@@ -84,7 +84,7 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 
     return {
        'getDataSet': getDataSet
-   }
+    }
 
 
 }]);
@@ -170,6 +170,62 @@ dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', fu
 dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
 
     //configuration for json/grid/graph.
+
+
+}]);
+
+
+
+dashboard.directive('panel+table', [function() {
+
+
+    var linkFn = function(scope, element, attrs, ngModelCtrl) {
+        var options = scope.$eval(attrs.options),
+            items = options.items;
+
+
+        var parent = angular.element(element);
+
+        if (items && items.length) {
+            var listGroup = $('div').addClass('list-group').appendTo(parent);
+
+
+            items.forEach(function(ele, idx) {
+
+                var listItem = $('div').addClass('list-group-item');
+                listItem.html(ele.name);
+                //listItem.dragable();
+
+
+                listItem.appendTo(listGroup);
+            });
+
+        }
+
+
+
+    };
+
+
+    var compileFn = function() {
+
+
+
+
+
+        return linkFn;
+    };
+
+
+    return {
+
+        scope: {
+           items:'@'
+        },
+
+        require: 'ngModel',
+        link: linkFn
+    };
 
 
 }]);
