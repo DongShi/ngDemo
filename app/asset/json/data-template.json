@@ -1,10 +1,20 @@
 [
     {
         "id": "000f",
+        "name": "testing.csv",
+        "aff": {
+            "lastModified": "123",
+            "author" : ["James"],
+            "audience": ["userA", "userB"]
+        },
+
+
         "units" : [
             {"uName":"State", "uId": "U123", "axis": "row", "type": "a"},
             {"uName":"Customer Gender", "uId": "U345", "axis": "row", "type": "a"},
             {"uName":"Profit", "uId": "U221", "axis": "col", "type": "m"}
         ]
+
+
     }
 ]

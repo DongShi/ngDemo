@@ -97,7 +97,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
     //member variables.
     $scope.displayMode = 'json';
-    $scope.currrentDataset = resolvedDataset;
+    $scope.currrentDatasets = resolvedDataset;
     $scope.gridOptions = {data:[]};
 
     //helper functions:
@@ -161,12 +161,27 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     }
 }]);
 
-//controller: dashboard.datasetInfo.
+//controller: dashboard ->  dashboard.datasetInfo.
 dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
+
+    //list of items to be shown on data set panel.
+    var currentDataset = $scope.currrentDatasets[0];
+    var info = $scope.datasetInfo = {};
+
+    if (currentDataset) {
+        info.name = currentDataset.name;
+        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
+        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
+    } else {
+        info.attrs = info.metrics = [];
+    }
+
+
+
 
 }]);
 
-//controller: dashboard.vizContent.
+//controller: dashboard -> dashboard.vizContent.
 dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
 
     //configuration for json/grid/graph.
