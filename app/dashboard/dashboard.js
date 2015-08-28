@@ -177,8 +177,6 @@ dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', fu
     }
 
 
-
-
 }]);
 
 //controller: dashboard -> dashboard.vizContent.
