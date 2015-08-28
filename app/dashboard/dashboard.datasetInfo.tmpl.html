@@ -1,1 +1,42 @@
-hahahaha
+
+<div class="datasetInfo.container" style="height: 100%">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">数据集合</h3>
+        </div>
+        <div class="panel-body">
+            {{datasetInfo.name}}
+        </div>
+
+    </div>
+</div>
+
+
+<div class="datasetInfo.container" style="height: 100%">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">类目</h3>
+    </div>
+
+
+    <div class="list-group" ng-repeat = 'attr in datasetInfo.attrs track by $index'>
+        <a href="#" class="list-group-item"> {{attr.uName}} </a>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">数值</h3>
+    </div>
+
+    <div class="list-group" ng-repeat = 'metric in datasetInfo.metrics track by $index'>
+        <a href="#" class="list-group-item"> {{metric.uName}} </a>
+    </div>
+</div>
+</div>
+
+
+
+

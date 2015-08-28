@@ -84,7 +84,7 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 
     return {
        'getDataSet': getDataSet
-   }
+    }
 
 
 }]);
@@ -97,7 +97,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
     //member variables.
     $scope.displayMode = 'json';
-    $scope.currrentDataset = resolvedDataset;
+    $scope.currrentDatasets = resolvedDataset;
     $scope.gridOptions = {data:[]};
 
     //helper functions:
@@ -161,15 +161,84 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     }
 }]);
 
-//controller: dashboard.datasetInfo.
+//controller: dashboard ->  dashboard.datasetInfo.
 dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
+
+    //list of items to be shown on data set panel.
+    var currentDataset = $scope.currrentDatasets[0];
+    var info = $scope.datasetInfo = {};
+
+    if (currentDataset) {
+        info.name = currentDataset.name;
+        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
+        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
+    } else {
+        info.attrs = info.metrics = [];
+    }
+
 
 }]);
 
-//controller: dashboard.vizContent.
+//controller: dashboard -> dashboard.vizContent.
 dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
 
     //configuration for json/grid/graph.
+
+
+}]);
+
+
+
+dashboard.directive('panel+table', [function() {
+
+
+    var linkFn = function(scope, element, attrs, ngModelCtrl) {
+        var options = scope.$eval(attrs.options),
+            items = options.items;
+
+
+        var parent = angular.element(element);
+
+        if (items && items.length) {
+            var listGroup = $('div').addClass('list-group').appendTo(parent);
+
+
+            items.forEach(function(ele, idx) {
+
+                var listItem = $('div').addClass('list-group-item');
+                listItem.html(ele.name);
+                //listItem.dragable();
+
+
+                listItem.appendTo(listGroup);
+            });
+
+        }
+
+
+
+    };
+
+
+    var compileFn = function() {
+
+
+
+
+
+        return linkFn;
+    };
+
+
+    return {
+
+        scope: {
+           items:'@'
+        },
+
+        require: 'ngModel',
+        link: linkFn
+    };
 
 
 }]);
