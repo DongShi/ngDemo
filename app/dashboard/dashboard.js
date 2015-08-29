@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', ['ui.grid']);
+var dashboard = angular.module('dashboard', ['ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
@@ -103,12 +103,12 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 
 
 //controller: dashboard.
-dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset', '$state', '$timeout', function($scope, dataService, resolvedDataset, $state, $timeout) {
+dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', function($scope, dataService, resolvedDataset,  $state, $timeout) {
 
     //member variables.
     $scope.displayMode = 'json';
     $scope.currrentDatasets = resolvedDataset;
-    $scope.gridOptions = {data:[]};
+    $scope.gridOptions = {data:[], enableColumnResizing: true};
 
 
     //list of items to be shown on data set panel.
@@ -123,91 +123,76 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         info.attrs = info.metrics = [];
     }
 
-    //helper functions:
-     var URL,
-         parseURL = function(dataType) {
-             //faking faking faking faking faking faking faking faking faking faking faking faking
-            return "/ngDemo/app/asset/json/grid-data1.json";
-             //faking faking faking faking faking faking faking faking faking faking faking faking
+    //method
+//    $scope.updateData = function (displayMode) {
+//       if ($scope.updateDataEx) {
+//           $scope.updateDataEx(displayMode);
+//       }
+//    }
 
-        };
-
-    URL = parseURL('json');
-
-
-    //variables.
-    dataService.requestData(URL).success(
-        function(data, status, header) {
-            dataService.setData(data);
-            $scope.jsonData =  dataService.getData();
-        }
-
-    ).error(
-        function (data, status, header) {
-            $window.log(data);
-        }
-    );
-
-
+    //configuration for json/grid/graph.
     //methods
     $scope.updateData = function (displayMode) {
 
-        $scope.displayMode = displayMode;
+        //helper functions:
+        var URL,
+            parseURL = function(dataType) {
+                //faking faking faking faking faking faking faking faking faking faking faking faking
+                return "/ngDemo/app/asset/json/grid-data1.json";
+                //faking faking faking faking faking faking faking faking faking faking faking faking
 
-        if (displayMode === 'grid') {
-            $scope.gridOptions.data = [];
+            };
 
-            $timeout(function () {
+        URL = parseURL('json');
 
-                $scope.gridOptions.data = $scope.jsonData;
-                var columnDefs = [];
-                if ($scope.jsonData.length) {
+        dataService.requestData(URL)
+            .then(
+            function (response) {
+                dataService.setData(response.data);
+                $scope.jsonData = dataService.getData();
+            },
+
+            function (response) {
+                $window.log(response);
+            }
+        ).then(function (data) {
+                $scope.displayMode = displayMode;
+
+                if (displayMode === 'grid') {
+                    $scope.gridOptions.data = [];
+                    $timeout(function () {
+
+                        $scope.gridOptions.data = $scope.jsonData;
+                        var columnDefs = [];
+                        if ($scope.jsonData.length) {
 
 
-                    var oneRowData = $scope.jsonData[0],
-                        keys = Object.keys(oneRowData);
+                            var oneRowData = $scope.jsonData[0],
+                                keys = Object.keys(oneRowData);
 
-                    for (var i = 0; i < keys.length; i++) {
-                        columnDefs.push({name: keys[i]});
-                    }
+                            for (var i = 0; i < keys.length; i++) {
+                                columnDefs.push({name: keys[i]});
+                            }
 
+                        }
+                        $scope.gridOptions.columnDefs = columnDefs;
+                        var targetState = "dashboard.vizContent." + displayMode;
+                        $state.go(targetState);
+                    });
+                } else {
+                    var targetState = "dashboard.vizContent." + displayMode;
+                    $state.go(targetState);
                 }
-                $scope.gridOptions.columnDefs = columnDefs;
-                var targetState = "dashboard.vizContent." + displayMode;
-                $state.go(targetState);
             });
-        } else {
-            var targetState = "dashboard.vizContent." + displayMode;
-            $state.go(targetState);
-        }
-
-
-
     }
+
+
 }]);
 
-////controller: dashboard ->  dashboard.datasetInfo.
-//dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
-//
-//    //list of items to be shown on data set panel.
-//    var currentDataset = $scope.currrentDatasets[0];
-//    var info = $scope.datasetInfo = {};
-//
-//    if (currentDataset) {
-//        info.name = currentDataset.name;
-//        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
-//        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
-//    } else {
-//        info.attrs = info.metrics = [];
-//    }
-//
-//
-//}]);
 
 //controller: dashboard -> dashboard.vizContent.
-dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
+dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$state', '$timeout', function($scope, dataService, $state, $timeout) {
 
-    //configuration for json/grid/graph.
 
 
 }]);
