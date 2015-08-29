@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="demoApp">
+<html ng-app="showcaseApp">
 <head lang="en">
     
     
@@ -36,8 +36,8 @@
     <script src = "lib/uploader/ng-file-upload.js" ></script>
 
 
-    <script src="js/services.js"></script>
-    <script src="js/demo.js"></script>
+    <script src="app/js/services.js"></script>
+    <script src="app/js/demo.js"></script>
 
 
 
@@ -53,76 +53,19 @@
 
 
 
-    <button ng-controller="uploaderController" ngf-select ng-model="upFile" class="btn btn-primary"> click me for uploading data</button>
-    <button ng-click="updateData('json')" class="btn btn-primary"> click me for raw json</button>
-    <button ng-click="updateData('grid')" class="btn btn-primary"> click me for grid display</button>
-    <button ng-click="updateData('graph')" class="btn btn-primary"> click me for graph display</button>
+    <!--<button ng-controller="uploaderController" ngf-select ng-model="upFile" class="btn btn-primary"> click me for uploading data</button>-->
+    <!--<button ng-click="updateData('json')" class="btn btn-primary"> click me for raw json</button>-->
+    <!--<button ng-click="updateData('grid')" class="btn btn-primary"> click me for grid display</button>-->
+    <!--<button ng-click="updateData('graph')" class="btn btn-primary"> click me for graph display</button>-->
 
 
     <hr>
 
 
-
-    <section class = 'table-demo'>
-
-        table demo goes here:
-
-
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Panel heading</div>
-            <div class="panel-body">
-                <p>...</p>
-            </div>
-
-            <!-- Table -->
-            <table class="table">
-                ...
-            </table>
-        </div>
+    <div ui-grid="gridOptions"></div>
 
 
 
-
-        <hr>
-           seperator...
-        <hr>
-
-        <div class="panel panel-default">
-
-            <div class="panel-body">
-                Panel content
-
-
-            </div>
-
-
-
-
-
-        </div>
-
-        <div class="panel panel-default" style = "width: 250px">
-            <div class="panel-heading">
-                <h3 class="panel-title">Panel title</h3>
-            </div>
-            <!--<div class="panel-body">-->
-                <!--Panel content-->
-            <!--</div>-->
-
-
-            <div class="list-group">
-                <a href="#" class="list-group-item"> Cras justo odio</a>
-                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                <a href="#" class="list-group-item">Morbi leo risus</a>
-                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-            </div>
-        </div>
-
-
-
-    </section>
     <!--<section class="pivot">-->
 
          <!--<div class="container-fluid">-->

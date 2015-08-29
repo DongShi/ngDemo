@@ -1,22 +1,2 @@
-analyzing data with {{displayMode}}....
+<div ui-view></div>
 
-<div ng-show="displayMode === 'json'">
-    <ul>
-        <li ng-repeat="ele in jsonData track by $index">
-            {{$index}} : {{ele | json}}
-        </li>
-    </ul>
-</div>
-
-
-<div ng-show="displayMode === 'grid'" >
-
-    grid....
-    <div ui-grid="gridOptions"> </div>
-</div>
-
-
-
-<!--<div ng-show="displayMode === 'graph'">-->
-    <!--<direcitve-graph></direcitve-graph>-->
-<!--</div>-->

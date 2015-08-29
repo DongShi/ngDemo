@@ -10,7 +10,7 @@
  * Date: 8/4/2015 1:50 PM
  * Copyright (c) 2015 MicroStrategy Incorporated. All rights reserved.
  */
-var vizTestApp = angular.module('vizTestApp', ['nvd3ChartDirectives']);
+var vizTestApp = angular.module('vizTestApp', ['nvd3ChartDirectives','ui.Grid']);
 
 
 vizTestApp.controller('vizController', ['$scope', function($scope){

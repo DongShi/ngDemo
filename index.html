@@ -6,16 +6,13 @@
 
     <link href="app/css/bootstrap.css" rel="stylesheet">
     <link href="app/css/app.css" rel="stylesheet">
-    <!--<link href="src/css/animations.css" rel="stylesheet">-->
-
-
-
 </head>
 
 
+
+
+
 <body>
-
-
 <header>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -36,7 +33,7 @@
                     <li ui-sref-active ='active'><a ui-sref='index'>回首页</a></li>
                     <li ui-sref-active ='active'> <a ui-sref='connectors'>数据链接器</a></li>
                     <li ui-sref-active ='active'><a ui-sref='cards'>个人卡片</a></li>
-                    <li ui-sref-active ='active'><a ui-sref='dashboard.datasetInfo'>数据图表</a></li>
+                    <li ui-sref-active ='active'><a ui-sref='dashboard'>数据图表</a></li>
                     <li ui-sref-active ='active'><a href="#">Link</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -77,22 +74,27 @@
     </nav>
  </header>
 
+<div ui-view> </div>
 
 
 
-<div ui-view='dynamic'></div>
-<div ui-view>Default content </div>
+<!--//testing purpose.-->
+<hr>
+    <pre>
+      <!-- Here's some values to keep an eye on in the sample in order to understand $state and $stateParams -->
+      $state = {{$state.current.name}}
+      $stateParams = {{$stateParams}}
+      $state full url = {{ $state.$current.url.source }}
+      <!-- $state.$current is not a public api, we are using it to
+           display the full url for learning purposes-->
+    </pre>
 
-
-
+<!--angular-->
 <script src="lib/angular.js"></script>
 <!--router-->
 <script src="lib/routing/angular-ui-router.js"></script>
-
  <!--grid-->
 <script src="lib/uiGrid/ui-grid.js"></script>
-
-
 
 <script src="app/dashboard/dashboard.js"></script>
 <script src="app/js/app.js"></script>

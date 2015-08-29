@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', []);
+var dashboard = angular.module('dashboard', ['ui.grid']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
@@ -13,7 +13,6 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('dashboard', {
         url: '/dashboard',
-        abstract: true,
         resolve: {
             resolvedDataset: ['dashboard.currentDataset', function (datasetService) {
 
@@ -24,15 +23,26 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
         },
         controller: 'dashboard.controller',
         templateUrl: '/ngDemo/app/dashboard/dashboard.tmpl.html'
-    }).state('dashboard.datasetInfo', {
-        url: '/',
-        controller: 'dashboard.datasetInfoCtl',
-        templateUrl: '/ngDemo/app/dashboard/dashboard.datasetInfo.tmpl.html'
-
     }).state('dashboard.vizContent', {
-        url: '/',
-        controller: 'dashboard.vizContentCtl',
-        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.tmpl.html'
+            abstract: true,
+            url: '/dashboard/vizContent',
+            templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.tmpl.html',
+            controller: 'dashboard.vizContentCtl'
+    }).state('dashboard.vizContent.json', {
+        url: '/dashboard/vizContent/json',
+        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html',
+        controller: 'dashboard.vizContentCtl'
+
+    }).state('dashboard.vizContent.grid', {
+        url: '/dashboard/vizContent/grid',
+        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.grid.html',
+        controller: 'dashboard.vizContentCtl'
+
+    }).state('dashboard.vizContent.graph', {
+        url: '/dashboard/vizContent/graph',
+        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.graph.html',
+        controller: 'dashboard.vizContentCtl'
+
     });
 
 }]);
@@ -100,6 +110,19 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     $scope.currrentDatasets = resolvedDataset;
     $scope.gridOptions = {data:[]};
 
+
+    //list of items to be shown on data set panel.
+    var currentDataset = $scope.currrentDatasets[0];
+    var info = $scope.datasetInfo = {};
+
+    if (currentDataset) {
+        info.name = currentDataset.name;
+        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
+        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
+    } else {
+        info.attrs = info.metrics = [];
+    }
+
     //helper functions:
      var URL,
          parseURL = function(dataType) {
@@ -149,35 +172,37 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
                     }
 
                 }
-                $scope.gridOptions.columnDefs = columnDefs
+                $scope.gridOptions.columnDefs = columnDefs;
+                var targetState = "dashboard.vizContent." + displayMode;
+                $state.go(targetState);
             });
         } else {
-
+            var targetState = "dashboard.vizContent." + displayMode;
+            $state.go(targetState);
         }
 
 
-        var targetState = "dashboard.vizContent";
-        $state.go(targetState);
+
     }
 }]);
 
-//controller: dashboard ->  dashboard.datasetInfo.
-dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
-
-    //list of items to be shown on data set panel.
-    var currentDataset = $scope.currrentDatasets[0];
-    var info = $scope.datasetInfo = {};
-
-    if (currentDataset) {
-        info.name = currentDataset.name;
-        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
-        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
-    } else {
-        info.attrs = info.metrics = [];
-    }
-
-
-}]);
+////controller: dashboard ->  dashboard.datasetInfo.
+//dashboard.controller('dashboard.datasetInfoCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
+//
+//    //list of items to be shown on data set panel.
+//    var currentDataset = $scope.currrentDatasets[0];
+//    var info = $scope.datasetInfo = {};
+//
+//    if (currentDataset) {
+//        info.name = currentDataset.name;
+//        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
+//        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
+//    } else {
+//        info.attrs = info.metrics = [];
+//    }
+//
+//
+//}]);
 
 //controller: dashboard -> dashboard.vizContent.
 dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', function($scope, dataService) {
@@ -189,56 +214,52 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', fun
 
 
 
-dashboard.directive('panel+table', [function() {
-
-
-    var linkFn = function(scope, element, attrs, ngModelCtrl) {
-        var options = scope.$eval(attrs.options),
-            items = options.items;
-
-
-        var parent = angular.element(element);
-
-        if (items && items.length) {
-            var listGroup = $('div').addClass('list-group').appendTo(parent);
-
-
-            items.forEach(function(ele, idx) {
-
-                var listItem = $('div').addClass('list-group-item');
-                listItem.html(ele.name);
-                //listItem.dragable();
-
-
-                listItem.appendTo(listGroup);
-            });
-
-        }
-
-
-
-    };
-
-
-    var compileFn = function() {
-
-
-
-
-
-        return linkFn;
-    };
-
-
-    return {
-
-        scope: {
-           items:'@'
-        },
-
-        require: 'ngModel',
-        link: linkFn
-    };
-
-
-}]);
+//dashboard.directive('panel+table', [function() {
+//
+//
+//    var linkFn = function(scope, element, attrs, ngModelCtrl) {
+//        var options = scope.$eval(attrs.options),
+//            items = options.items;
+//
+//
+//        var parent = angular.element(element);
+//
+//        if (items && items.length) {
+//            var listGroup = $('div').addClass('list-group').appendTo(parent);
+//
+//
+//            items.forEach(function(ele, idx) {
+//
+//                var listItem = $('div').addClass('list-group-item');
+//                listItem.html(ele.name);
+//                //listItem.dragable();
+//
+//
+//                listItem.appendTo(listGroup);
+//            });
+//        }
+//    };
+//
+//
+//    var compileFn = function() {
+//
+//
+//
+//
+//
+//        return linkFn;
+//    };
+//
+//
+//    return {
+//
+//        scope: {
+//           items:'@'
+//        },
+//
+//        require: 'ngModel',
+//        link: linkFn
+//    };
+//
+//
+//}]);
