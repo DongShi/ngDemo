@@ -351,12 +351,7 @@ demoApp.directive('drawGraph', function() {
        var linkFn = function(scope, element, attributes, controller) {
            if (!!attributes.cType) {
                controller.changeGraphType(attributes.cType);  //this will work
-
-
-//               scope.options = controller.getGraphOptions();
-//               controller.changeGraphType(attributes.cType, scope.options);
            }
-
        };
 
        return {
