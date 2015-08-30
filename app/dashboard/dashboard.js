@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', ['ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
+var dashboard = angular.module('dashboard', ['nvd3', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
@@ -72,6 +72,10 @@ dashboard.factory('dashboard.data', ['$http', function($http){
 
 }]);
 
+dashboard.factory('dashboard.vizFormat', ['$http', function($http){
+//todo provide default grid/graph settings per type.
+
+}]);
 
 
 
@@ -109,6 +113,48 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     $scope.displayMode = 'json';
     $scope.currrentDatasets = resolvedDataset;
     $scope.gridOptions = {data:[], enableColumnResizing: true};
+    $scope.graphOptions = {
+        config :{
+            chart: {
+                type: 'cumulativeLineChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 65
+                },
+                x: function(d){ return d[0]; },
+                y: function(d){ return d[1]/100; },
+                average: function(d) { return d.mean/100; },
+
+                color: d3.scale.category10().range(),
+                transitionDuration: 300,
+                useInteractiveGuideline: true,
+                clipVoronoi: false,
+
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%m/%d/%y')(new Date(d));
+                    },
+                    showMaxMin: false,
+                    staggerLabels: true
+                },
+
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    tickFormat: function(d){
+                        return d3.format(',.1%')(d);
+                    },
+                    axisLabelDistance: 20
+                }
+            }
+        }, data : {
+
+        }
+    };
+
 
 
     //list of items to be shown on data set panel.
@@ -123,13 +169,6 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         info.attrs = info.metrics = [];
     }
 
-    //method
-//    $scope.updateData = function (displayMode) {
-//       if ($scope.updateDataEx) {
-//           $scope.updateDataEx(displayMode);
-//       }
-//    }
-
     //configuration for json/grid/graph.
     //methods
     $scope.updateData = function (displayMode) {
@@ -138,18 +177,23 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         var URL,
             parseURL = function(dataType) {
                 //faking faking faking faking faking faking faking faking faking faking faking faking
-                return "/ngDemo/app/asset/json/grid-data1.json";
+                if (displayMode === 'json' || displayMode === 'grid') {
+                    return "/ngDemo/app/asset/json/grid-data1.json";
+                }
+
+                return "/ngDemo/app/asset/json/graph-data.json";
                 //faking faking faking faking faking faking faking faking faking faking faking faking
 
             };
 
-        URL = parseURL('json');
+        URL = parseURL(displayMode);
 
         dataService.requestData(URL)
             .then(
             function (response) {
                 dataService.setData(response.data);
                 $scope.jsonData = dataService.getData();
+                return response.data;
             },
 
             function (response) {
@@ -180,6 +224,10 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
                         $state.go(targetState);
                     });
                 } else {
+                    if (displayMode === 'graph') {
+                        $scope.graphOptions.data = data;
+                    }
+
                     var targetState = "dashboard.vizContent." + displayMode;
                     $state.go(targetState);
                 }
