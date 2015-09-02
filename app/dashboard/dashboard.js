@@ -65,9 +65,32 @@ dashboard.factory('dashboard.data', ['$http', function($http){
         jsonData = data;
     };
 
+
+    var getData = function(dataType) {
+
+        dataType = dataType || 'json';
+
+        if (dataType === 'json') {
+
+            return jsonData;
+        } else if (dataType === 'grid') {
+
+
+
+
+        } else if (dataType === 'd3Chart')  {
+
+        } else if (dataType === 'highCharts')  {
+
+        }
+
+        return jsonData;
+
+    };
+
     return {
         'setData': setData,
-        'getData': function() {return jsonData},
+        'getData': getData,
         'requestData': requesetData
     }
 
@@ -249,6 +272,9 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$state', '$timeout', function($scope, dataService, $state, $timeout) {
 
     var vm = this;
+
+    vm.chartTypes = ['bar', 'area', 'line'];
+    vm.changeType = changeGraphType;
     vm.chartConfig = {
         options: {
             chart: {
@@ -259,7 +285,7 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
             data: [10, 15, 12, 8, 7]
         }],
         title: {
-            text: 'Hello'
+            text: 'Demo Chart'
         },
 
         loading: false
@@ -274,17 +300,22 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
             return old;
         };
 
-        if (this.jsonData) {
+        if (vm.jsonData) {
 
         }
 
-        if (this.chartType) {
+        if (vm.chartType) {
 
         }
 
-    };
+    }
 
 
+    function changeGraphType(type) {
+        if (!!type) {
+            vm.chartConfig.chartConfig.type = type;
+        }
+    }
 
 }]);
 

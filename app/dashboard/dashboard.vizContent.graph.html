@@ -2,6 +2,23 @@
     <!--<nvd3 options ="graphOptions.config" data="graphOptions.data"> </nvd3>-->
 <!--</div>-->
 
+
+
 <div ng-controller="dashboard.vizContentCtl as graphController">
+
+    <select name="repeatSelect" ng-model="graphController.chartConfig.options.chart.type">
+        <option ng-repeat="option in graphController.chartTypes" value="{{option}}">{{option}}</option>
+    </select>
+
+
+
+    <!--<div class="animate-switch-container"-->
+         <!--ng-switch on="graphController.chartConfig.chartConfig.type">-->
+        <!--<div class="animate-switch" ng-switch-when="Bar">Bar</div>-->
+        <!--<div class="animate-switch" ng-switch-when="Line">Line</div>-->
+        <!--<div class="animate-switch" ng-switch-when="Area">Area</div>-->
+        <!--<div class="animate-switch" ng-switch-default>Bar</div>-->
+    <!--</div>-->
+
     <highchart id="chart1" config="graphController.chartConfig"></highchart>
 </div>
