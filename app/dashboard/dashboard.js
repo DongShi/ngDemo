@@ -22,6 +22,7 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
             }]
         },
         controller: 'dashboard.controller',
+        controllerAs: 'dashboardController',
         templateUrl: '/ngDemo/app/dashboard/dashboard.tmpl.html'
     }).state('dashboard.vizContent', {
             abstract: true,
@@ -109,11 +110,14 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 //controller: dashboard.
 dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', function($scope, dataService, resolvedDataset,  $state, $timeout) {
 
+    var vm = this;
+
     //member variables.
-    $scope.displayMode = 'json';
-    $scope.currrentDatasets = resolvedDataset;
-    $scope.gridOptions = {data:[], enableColumnResizing: true};
-    $scope.graphOptions = {
+    vm.displayMode = 'json';
+    vm.currrentDatasets = resolvedDataset;
+    vm.gridOptions = {data:[], enableColumnResizing: true};
+    vm.updateData = updateFun;
+    vm.graphOptions = {
         config :{
 //            chart: {
 //                type: 'cumulativeLineChart',
@@ -156,22 +160,25 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     };
 
 
+    activate();
 
-    //list of items to be shown on data set panel.
-    var currentDataset = $scope.currrentDatasets[0];
-    var info = $scope.datasetInfo = {};
+    function activate() {
 
-    if (currentDataset) {
-        info.name = currentDataset.name;
-        info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
-        info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
-    } else {
-        info.attrs = info.metrics = [];
+        var currentDataset = vm.currrentDatasets[0];
+        var info = vm.datasetInfo = {};
+
+        if (currentDataset) {
+            info.name = currentDataset.name;
+            info.attrs = currentDataset.units.filter(function(e) {return e.type === 'a'});
+            info.metrics = currentDataset.units.filter(function(e) {return e.type === 'm'});
+        } else {
+            info.attrs = info.metrics = [];
+        }
     }
 
     //configuration for json/grid/graph.
     //methods
-    $scope.updateData = function (displayMode) {
+    function updateFun(displayMode) {
 
         //helper functions:
         var URL,
@@ -192,7 +199,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
             .then(
             function (response) {
                 dataService.setData(response.data);
-                $scope.jsonData = dataService.getData();
+                vm.jsonData = dataService.getData();
                 return response.data;
             },
 
@@ -200,18 +207,18 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
                 $window.log(response);
             }
         ).then(function (data) {
-                $scope.displayMode = displayMode;
+                vm.displayMode = displayMode;
 
                 if (displayMode === 'grid') {
-                    $scope.gridOptions.data = [];
+                    vm.gridOptions.data = [];
                     $timeout(function () {
 
-                        $scope.gridOptions.data = $scope.jsonData;
+                        vm.gridOptions.data = vm.jsonData;
                         var columnDefs = [];
-                        if ($scope.jsonData.length) {
+                        if (vm.jsonData.length) {
 
 
-                            var oneRowData = $scope.jsonData[0],
+                            var oneRowData = vm.jsonData[0],
                                 keys = Object.keys(oneRowData);
 
                             for (var i = 0; i < keys.length; i++) {
@@ -219,13 +226,13 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
                             }
 
                         }
-                        $scope.gridOptions.columnDefs = columnDefs;
+                        vm.gridOptions.columnDefs = columnDefs;
                         var targetState = "dashboard.vizContent." + displayMode;
                         $state.go(targetState);
                     });
                 } else {
                     if (displayMode === 'graph') {
-                        $scope.graphOptions.data = data;
+                        vm.graphOptions.data = data;
                     }
 
                     var targetState = "dashboard.vizContent." + displayMode;
@@ -262,7 +269,7 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
     init();
 
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
-    var init = function () {
+    function init() {
         var transformToGraph = function (old) {
             return old;
         };
