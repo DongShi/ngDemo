@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', ['nvd3', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
+var dashboard = angular.module('dashboard', ['highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
@@ -115,41 +115,41 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     $scope.gridOptions = {data:[], enableColumnResizing: true};
     $scope.graphOptions = {
         config :{
-            chart: {
-                type: 'cumulativeLineChart',
-                height: 450,
-                margin : {
-                    top: 20,
-                    right: 20,
-                    bottom: 60,
-                    left: 65
-                },
-                x: function(d){ return d[0]; },
-                y: function(d){ return d[1]/100; },
-                average: function(d) { return d.mean/100; },
-
-                color: d3.scale.category10().range(),
-                transitionDuration: 300,
-                useInteractiveGuideline: true,
-                clipVoronoi: false,
-
-                xAxis: {
-                    axisLabel: 'X Axis',
-                    tickFormat: function(d) {
-                        return d3.time.format('%m/%d/%y')(new Date(d));
-                    },
-                    showMaxMin: false,
-                    staggerLabels: true
-                },
-
-                yAxis: {
-                    axisLabel: 'Y Axis',
-                    tickFormat: function(d){
-                        return d3.format(',.1%')(d);
-                    },
-                    axisLabelDistance: 20
-                }
-            }
+//            chart: {
+//                type: 'cumulativeLineChart',
+//                height: 450,
+//                margin : {
+//                    top: 20,
+//                    right: 20,
+//                    bottom: 60,
+//                    left: 65
+//                },
+//                x: function(d){ return d[0]; },
+//                y: function(d){ return d[1]/100; },
+//                average: function(d) { return d.mean/100; },
+//
+//                color: d3.scale.category10().range(),
+//                transitionDuration: 300,
+//                useInteractiveGuideline: true,
+//                clipVoronoi: false,
+//
+//                xAxis: {
+//                    axisLabel: 'X Axis',
+//                    tickFormat: function(d) {
+//                        return d3.time.format('%m/%d/%y')(new Date(d));
+//                    },
+//                    showMaxMin: false,
+//                    staggerLabels: true
+//                },
+//
+//                yAxis: {
+//                    axisLabel: 'Y Axis',
+//                    tickFormat: function(d){
+//                        return d3.format(',.1%')(d);
+//                    },
+//                    axisLabelDistance: 20
+//                }
+//            }
         }, data : {
 
         }
@@ -240,6 +240,42 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
 //controller: dashboard -> dashboard.vizContent.
 dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$state', '$timeout', function($scope, dataService, $state, $timeout) {
+
+    var vm = this;
+    vm.chartConfig = {
+        options: {
+            chart: {
+                type: 'bar'
+            }
+        },
+        series: [{
+            data: [10, 15, 12, 8, 7]
+        }],
+        title: {
+            text: 'Hello'
+        },
+
+        loading: false
+    };
+
+
+    init();
+
+    ///////////////////////////////////// the inflame separator///////////////////////////////////////////
+    var init = function () {
+        var transformToGraph = function (old) {
+            return old;
+        };
+
+        if (this.jsonData) {
+
+        }
+
+        if (this.chartType) {
+
+        }
+
+    };
 
 
 
