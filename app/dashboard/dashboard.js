@@ -31,14 +31,12 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
             controller: 'dashboard.vizContentCtl'
     }).state('dashboard.vizContent.json', {
         url: '/dashboard/vizContent/json',
-        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html',
-        controller: 'dashboard.vizContentCtl'
-
+        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html'
     }).state('dashboard.vizContent.grid', {
         url: '/dashboard/vizContent/grid',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.grid.html',
-        controller: 'dashboard.vizContentCtl'
-
+        controller: 'dashboard.vizContentCtl',
+        controllerAs: 'gridController'
     }).state('dashboard.vizContent.graph', {
         url: '/dashboard/vizContent/graph',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.graph.html',
@@ -147,7 +145,8 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 
 
 //controller: dashboard.
-dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', function($scope, dataService, resolvedDataset,  $state, $timeout) {
+dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', '$window',
+    function($scope, dataService, resolvedDataset,  $state, $timeout, $window) {
 
     var vm = this;
 
@@ -155,17 +154,11 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     vm.displayMode = 'json';
     vm.currrentDatasets = resolvedDataset;
     vm.gridOptions = {data:[], enableColumnResizing: true};
-    vm.updateData = updateFun;
-    vm.graphOptions = {
-        config :{
-
-        }, data : {
-
-        }
-    };
-
+    vm.updateData = fetchAllData;
+    vm.updateTemplate = updateTemplate;
 
     activate();
+    ///////////////////////////////////// the inflame separator///////////////////////////////////////////
 
     function activate() {
 
@@ -181,13 +174,17 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         }
     }
 
-    //configuration for json/grid/graph.
-    //methods
-    function updateFun(displayMode) {
+    //manipulate data & template
+    function updateTemplate(object) {
+        $window.console.log(object);
+    }
+
+    function fetchAllData(displayMode) {
+        $window.console.log("fetch all data called")
 
         //helper functions:
         var URL,
-            parseURL = function(dataType) {
+            parseURL = function (dataType) {
                 //faking faking faking faking faking faking faking faking faking faking faking faking
                 if (displayMode === 'json' || displayMode === 'grid') {
                     return "/ngDemo/app/asset/json/grid-data1.json";
@@ -209,7 +206,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
             },
 
             function (response) {
-                $window.log(response);
+                $window.console.log(response);
             }
         ).then(function (data) {
                 vm.displayMode = displayMode;
@@ -221,29 +218,23 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
                         vm.gridOptions.data = vm.jsonData;
                         var columnDefs = [];
                         if (vm.jsonData.length) {
-
-
                             var oneRowData = vm.jsonData[0],
                                 keys = Object.keys(oneRowData);
 
                             for (var i = 0; i < keys.length; i++) {
                                 columnDefs.push({name: keys[i]});
                             }
-
                         }
                         vm.gridOptions.columnDefs = columnDefs;
-                        var targetState = "dashboard.vizContent." + displayMode;
-                        $state.go(targetState);
                     });
                 } else {
-                    if (displayMode === 'graph') {
-                        vm.graphOptions.data = data;
-                    }
-
-                    var targetState = "dashboard.vizContent." + displayMode;
-                    $state.go(targetState);
+                    //todo graph preparation.
                 }
-            });
+
+                var targetState = "dashboard.vizContent." + displayMode;
+                $state.go(targetState);
+            }
+        );
     }
 
 
@@ -251,7 +242,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
 
 //controller: dashboard -> dashboard.vizContent.
-dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$timeout', function(dataService) {
+dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$timeout', '$http', function(dataService) {
 
     var vm = this;
 
@@ -266,8 +257,7 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
         series: [{
             data: [10, 15, 12, 8, 7]
         },
-            {color: 'red',data: [22, 33, 55, 17, -10]},
-            //{data: [16, -3, 32, 66, 99]}
+            {color: 'red',data: [22, 33, 55, 17, -10]}
         ],
         title: {
             text: 'Demo Chart'
@@ -277,7 +267,7 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
     };
 
     vm.tryFunc = tryFunc;
-
+    vm.updateTemplate = updateTemplate;
 
     init(dataService);
 
@@ -297,9 +287,20 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
     function tryFunc(spinnerApi, spinnerService) {
         window.console.log(spinnerApi);
         window.console.log(spinnerService);
-
     }
 
+    /**
+     * notify a template update.
+     * @param index
+     */
+    function updateTemplate(index) {
+
+        var promise = $http.post();
+
+        promise.then().then();
+
+        return promise;
+    }
 
 
     function changeGraphType(type) {

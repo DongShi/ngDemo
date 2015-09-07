@@ -1,5 +1,9 @@
 <div class="container-fluid">
     <div class="row" style="height: 40px;">
+        <select name="repeatSelect" ng-model="graphController.chartConfig.options.chart.type">
+            <option ng-repeat="option in graphController.chartTypes" value="{{option}}">{{option}}</option>
+        </select>
+
         <div class="btn-group pull-right" style="padding-top: 3px">
             <button ng-click="dashboardController.updateData('json')" class="btn btn-primary"> click me for raw json</button>
             <button ng-click="dashboardController.updateData('grid')" class="btn btn-primary"> click me for grid display</button>
@@ -35,7 +39,7 @@
 
 
                     <div class="list-group" ng-repeat = 'attr in dashboardController.datasetInfo.attrs track by $index'>
-                        <a href="#" class="list-group-item"> {{attr.uName}} </a>
+                        <a href="#" class="list-group-item" ng-dblclick="dashboardController.updateTemplate(attr)"> {{attr.uName}} </a>
                     </div>
                 </div>
 
@@ -46,7 +50,7 @@
                     </div>
 
                     <div class="list-group" ng-repeat = 'metric in dashboardController.datasetInfo.metrics track by $index'>
-                        <a href="#" class="list-group-item"> {{metric.uName}} </a>
+                        <a href="#" class="list-group-item" ng-dblclick="dashboardController.updateTemplate(metric)"> {{metric.uName}} </a>
                     </div>
                 </div>
             </div>
