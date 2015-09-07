@@ -1,17 +1,11 @@
-<!--<div>-->
-    <!--<nvd3 options ="graphOptions.config" data="graphOptions.data"> </nvd3>-->
-<!--</div>-->
-
-
-
-<div ng-controller="dashboard.vizContentCtl as graphController">
+<div>
 
     <select name="repeatSelect" ng-model="graphController.chartConfig.options.chart.type">
         <option ng-repeat="option in graphController.chartTypes" value="{{option}}">{{option}}</option>
     </select>
 
 
-    <st-testable on-load = "graphController.tryFunc(spinner)"> heihei </st-testable>
+    <st-testable on-load = "graphController.tryFunc(spinnerApi, spinnerService)"> heihei </st-testable>
 
 
     <highchart id="chart1" config="graphController.chartConfig"></highchart>
