@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', ['highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
+var dashboard = angular.module('dashboard', ['st-common', 'highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
@@ -51,7 +51,7 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
 
 dashboard.factory('dashboard.data', ['$http', function($http){
 
-    var jsonData = null;
+    var jsonData = [];
     var currentURL = "";
     var requesetData = function(url) {
         return $http.get(url);
@@ -81,6 +81,29 @@ dashboard.factory('dashboard.data', ['$http', function($http){
         } else if (dataType === 'd3Chart')  {
 
         } else if (dataType === 'highCharts')  {
+
+
+            var result = {data: []};
+            jsonData.forEach(function(ele, idx) {
+
+                //ele is an array
+                var arr = ele.value;
+                var aSeries = [];
+                arr.forEach(function(element, index) {
+                    aSeries.push(element[0] || 0);
+                });
+
+                result.data.push(aSeries);
+
+
+                return result;
+            });
+
+
+
+
+
+
 
         }
 
@@ -273,7 +296,7 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
 
     var vm = this;
 
-    vm.chartTypes = ['bar', 'area', 'line'];
+    vm.chartTypes = ['bar', 'area', 'line', 'pie'];
     vm.changeType = changeGraphType;
     vm.chartConfig = {
         options: {
@@ -283,7 +306,10 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
         },
         series: [{
             data: [10, 15, 12, 8, 7]
-        }],
+        },
+            {color: 'red',data: [22, 33, 55, 17, -10]},
+            //{data: [16, -3, 32, 66, 99]}
+        ],
         title: {
             text: 'Demo Chart'
         },
@@ -291,24 +317,29 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
         loading: false
     };
 
+    vm.tryFunc = tryFunc;
 
-    init();
+
+    init(dataService);
 
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
-    function init() {
-        var transformToGraph = function (old) {
-            return old;
-        };
+    function init(dataService) {
+//        var result = dataService.getData('highCharts');
+//        //vm.chartConfig.options.data = data;
+//
+//
+//
+//        result.forEach(function(ele, idx){
+//            vm.chartConfig.options.series.push({'data': ele});
+//        });
+    }
 
-        if (vm.jsonData) {
 
-        }
-
-        if (vm.chartType) {
-
-        }
+    function tryFunc(spinner) {
+        window.console.log(spinner);
 
     }
+
 
 
     function changeGraphType(type) {
