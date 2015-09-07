@@ -98,13 +98,6 @@ dashboard.factory('dashboard.data', ['$http', function($http){
 
                 return result;
             });
-
-
-
-
-
-
-
         }
 
         return jsonData;
@@ -165,41 +158,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     vm.updateData = updateFun;
     vm.graphOptions = {
         config :{
-//            chart: {
-//                type: 'cumulativeLineChart',
-//                height: 450,
-//                margin : {
-//                    top: 20,
-//                    right: 20,
-//                    bottom: 60,
-//                    left: 65
-//                },
-//                x: function(d){ return d[0]; },
-//                y: function(d){ return d[1]/100; },
-//                average: function(d) { return d.mean/100; },
-//
-//                color: d3.scale.category10().range(),
-//                transitionDuration: 300,
-//                useInteractiveGuideline: true,
-//                clipVoronoi: false,
-//
-//                xAxis: {
-//                    axisLabel: 'X Axis',
-//                    tickFormat: function(d) {
-//                        return d3.time.format('%m/%d/%y')(new Date(d));
-//                    },
-//                    showMaxMin: false,
-//                    staggerLabels: true
-//                },
-//
-//                yAxis: {
-//                    axisLabel: 'Y Axis',
-//                    tickFormat: function(d){
-//                        return d3.format(',.1%')(d);
-//                    },
-//                    axisLabelDistance: 20
-//                }
-//            }
+
         }, data : {
 
         }
@@ -292,7 +251,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
 
 //controller: dashboard -> dashboard.vizContent.
-dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$state', '$timeout', function($scope, dataService, $state, $timeout) {
+dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$timeout', function(dataService) {
 
     var vm = this;
 
@@ -335,8 +294,8 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
     }
 
 
-    function tryFunc(spinner) {
-        window.console.log(spinner);
+    function tryFunc(spinnerApi) {
+        window.console.log(spinnerApi);
 
     }
 
@@ -349,55 +308,3 @@ dashboard.controller('dashboard.vizContentCtl', ['$scope', 'dashboard.data', '$s
     }
 
 }]);
-
-
-
-//dashboard.directive('panel+table', [function() {
-//
-//
-//    var linkFn = function(scope, element, attrs, ngModelCtrl) {
-//        var options = scope.$eval(attrs.options),
-//            items = options.items;
-//
-//
-//        var parent = angular.element(element);
-//
-//        if (items && items.length) {
-//            var listGroup = $('div').addClass('list-group').appendTo(parent);
-//
-//
-//            items.forEach(function(ele, idx) {
-//
-//                var listItem = $('div').addClass('list-group-item');
-//                listItem.html(ele.name);
-//                //listItem.dragable();
-//
-//
-//                listItem.appendTo(listGroup);
-//            });
-//        }
-//    };
-//
-//
-//    var compileFn = function() {
-//
-//
-//
-//
-//
-//        return linkFn;
-//    };
-//
-//
-//    return {
-//
-//        scope: {
-//           items:'@'
-//        },
-//
-//        require: 'ngModel',
-//        link: linkFn
-//    };
-//
-//
-//}]);
