@@ -42,8 +42,8 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
     }).state('dashboard.vizContent.graph', {
         url: '/dashboard/vizContent/graph',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.graph.html',
-        controller: 'dashboard.vizContentCtl'
-
+        controller: 'dashboard.vizContentCtl',
+        controllerAs: 'graphController'
     });
 
 }]);
@@ -294,8 +294,9 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
     }
 
 
-    function tryFunc(spinnerApi) {
+    function tryFunc(spinnerApi, spinnerService) {
         window.console.log(spinnerApi);
+        window.console.log(spinnerService);
 
     }
 

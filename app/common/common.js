@@ -47,7 +47,7 @@
 
             if ($scope.onLoad) {
                 $scope.onLoad({
-                    //spinnerService: spinnerService,
+                    spinnerService: spinnerService,
                     spinnerApi: api
                 });
             }
@@ -57,6 +57,10 @@
     }
     }
 );
+
+
+
+
 
 
 })();
