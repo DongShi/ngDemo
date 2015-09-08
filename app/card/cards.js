@@ -6,42 +6,77 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var cards = angular.module('cards', []);
+var cardsModule = angular.module('cards', []);
 
 
 
-cards.factory('card.service', ['$http', function($http) {
+
+cardsModule.controller('cardCtrl', ['card.service', function(cardService) {
+    var vm = this;
+
+    vm.cardList = cardService.getAll();
+    vm.maxToShow = 100;
+    vm.cardLayout = 'list';
+    vm.deleteCard = _deleteCard;
+    vm.updateCard = _updateCard;
+    //////////////////////////
+
+
+    function _deleteCard(id) {
+
+    }
+
+    function _updateCard(id, options) {
+
+    }
+
+    function findById(id) {
+
+    }
+
+
+}]);
+
+
+cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $stateParams) {
 
       var userId = $stateParams.user || 0;
-      var URL = '/card/' + userId;
+
+      var baseURL = '/card/';
       var cardList = [];
+      var service = {
 
-
-
-      var result = $http.get(URL).then(function(responese) {
-
-
-      });
-
-
-      return {
-          getCards: function(){
-              return cardList;
-          },
-
-          getOneCard: function(id) {
-              if (id >= 0 && id < cardList.length) {
-                  return cardList[id];
-
-              }
-          },
-
-          removeOneCard: function(idx) {
-              cardList.splice(idx, 1);
-          }
+          get: getCard,
+          update: updateCard,
+          delete: deleteCard,
+          getAll: getAllCards
       };
 
+      return service;
 
+    /////////////////////////////
+    function getCard(id) {
+        if (id >= 0 && id < cardList.length) {
+            return cardList[id];
+
+        }
+    }
+
+    function getAllCards() {
+
+    }
+
+    function updateCard(id, options) {
+
+    }
+
+    function deleteCard(idx) {
+        cardList.splice(idx, 1);
+    }
+
+    function ajaxFactory(method, options) {
+
+    }
 
 
 }]);

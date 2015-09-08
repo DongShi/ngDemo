@@ -34,7 +34,8 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
         }
     ).state('cards', {
             url : '/cards',
-            template:"Hello cards <a ui-sref='connectors'> go to connectors</a>"
+            templateUrl: '/ngDemo/app/card/cards.html'
+//            template:"Hello cards <a ui-sref='connectors'> go to connectors</a>"
         }
     ).state('connectors', {
             url : '/connectors',
