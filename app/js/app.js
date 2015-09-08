@@ -4,7 +4,7 @@
 //
 
 //demo
-var showcaseApp = angular.module('showcaseApp', ["ui.router", "dashboard"]);
+var showcaseApp = angular.module('showcaseApp', ["ui.router", "dashboard", "ngFileUpload"]);
 
 //pre-configuration.
 showcaseApp.run(

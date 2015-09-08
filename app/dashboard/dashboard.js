@@ -31,7 +31,7 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
     }).state('dashboard.vizContent.json', {
         url: '/dashboard/vizContent/json',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html',
-        controller: 'dashboard.vizContentCtl',
+        controller: 'dashboard.vizContentCtl'
 
     }).state('dashboard.vizContent.grid', {
         url: '/dashboard/vizContent/grid',
@@ -146,8 +146,8 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 
 
 //controller: dashboard.
-dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', '$window',
-    function($scope, dataService, resolvedDataset,  $state, $timeout, $window) {
+dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', '$window', 'Upload',
+    function($scope, dataService, resolvedDataset,  $state, $timeout, $window, uploader) {
 
     var vm = this;
 
@@ -160,6 +160,34 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
     activate();
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
+
+    $scope.$watch('upFile', function(){
+        var file = $scope.upFile;
+        file && vm.uploadFile(file);
+
+    });
+
+
+        vm.uploadFile = function (file) {
+        //check file extension
+
+
+        //check file size.
+
+        uploader.upload({
+            url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+            fields: {'username': $scope.username},
+            file: file
+        }).progress(function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+        }).success(function (data, status, headers, config) {
+            console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+        }).error(function (data, status, headers, config) {
+            console.log('error status: ' + status);
+        })
+    };
+
 
     function activate() {
 
