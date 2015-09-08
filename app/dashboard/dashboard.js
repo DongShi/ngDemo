@@ -27,11 +27,12 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
     }).state('dashboard.vizContent', {
             abstract: true,
             url: '/dashboard/vizContent',
-            templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.tmpl.html',
-            controller: 'dashboard.vizContentCtl'
+            templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.tmpl.html'
     }).state('dashboard.vizContent.json', {
         url: '/dashboard/vizContent/json',
-        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html'
+        templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html',
+        controller: 'dashboard.vizContentCtl',
+
     }).state('dashboard.vizContent.grid', {
         url: '/dashboard/vizContent/grid',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.grid.html',
@@ -120,10 +121,10 @@ dashboard.factory('dashboard.vizFormat', ['$http', function($http){
 //this can be consolidated to dashboard.data
 dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function($http, $stateParams) {
 
-     var userId = $stateParams.userId || 0;
+    //var userId = $stateParams.userId || 0;
 
 
-     //just testing for now.
+    //just testing for now.
     var getDataSet = function() {
         //faking faking faking faking faking faking faking faking faking faking faking faking
         var URL = "/ngDemo/app/asset/json/data-template.json";
@@ -177,10 +178,20 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     //manipulate data & template
     function updateTemplate(object) {
         $window.console.log(object);
+
+        var targetState = "dashboard.vizContent." + vm.displayMode;
+        $state.go(targetState);
+
+        $timeout(function () {
+
+            $scope.$broadcast('template-updated', object);
+        }, 500);
+
     }
 
     function fetchAllData(displayMode) {
-        $window.console.log("fetch all data called")
+        $window.console.log("fetch all data called");
+        vm.displayMode = displayMode;
 
         //helper functions:
         var URL,
@@ -242,7 +253,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
 
 //controller: dashboard -> dashboard.vizContent.
-dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$timeout', '$http', function(dataService) {
+dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$scope', '$window', '$http', function(dataService, $scope, $window) {
 
     var vm = this;
 
@@ -269,6 +280,10 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
     vm.tryFunc = tryFunc;
     vm.updateTemplate = updateTemplate;
 
+
+    $scope.$on('template-updated', templateUpdateHandler);
+
+
     init(dataService);
 
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
@@ -285,8 +300,8 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
 
 
     function tryFunc(spinnerApi, spinnerService) {
-        window.console.log(spinnerApi);
-        window.console.log(spinnerService);
+        $window.console.log(spinnerApi);
+        $window.console.log(spinnerService);
     }
 
     /**
@@ -308,5 +323,15 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
             vm.chartConfig.chartConfig.type = type;
         }
     }
+
+    function templateUpdateHandler(event, obj) {
+
+
+        $window.console.log('feedback called');
+
+        //$window.console.log(event);
+        //$window.console.log(obj);
+    }
+
 
 }]);
