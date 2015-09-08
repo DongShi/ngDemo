@@ -209,7 +209,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
         $timeout(function () {
             $scope.$broadcast('template-updated', object);
-        }, 500);
+        }, 50);
 
     }
 
