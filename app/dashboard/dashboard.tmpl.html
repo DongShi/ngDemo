@@ -40,7 +40,7 @@
 
 
                     <div class="list-group" ng-repeat = 'attr in dashboardController.datasetInfo.attrs track by $index'>
-                        <a href="#" class="list-group-item" ng-dblclick="dashboardController.updateTemplate(attr)"> {{attr.uName}} </a>
+                        <div class="list-group-item" ng-dblclick="dashboardController.updateTemplate(attr)"> {{attr.uName}} </div>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="list-group" ng-repeat = 'metric in dashboardController.datasetInfo.metrics track by $index'>
-                        <a href="#" class="list-group-item" ng-dblclick="dashboardController.updateTemplate(metric)"> {{metric.uName}} </a>
+                        <div class="list-group-item" ng-dblclick="dashboardController.updateTemplate(metric)"> {{metric.uName}} </div>
                     </div>
                 </div>
             </div>

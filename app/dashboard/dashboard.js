@@ -157,22 +157,20 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     vm.gridOptions = {data:[], enableColumnResizing: true};
     vm.updateData = fetchAllData;
     vm.updateTemplate = updateTemplate;
-
+    vm.uploadFile = uploadFile;
     activate();
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
 
     $scope.$watch('upFile', function(){
         var file = $scope.upFile;
         file && vm.uploadFile(file);
-
     });
 
 
-        vm.uploadFile = function (file) {
-        //check file extension
+    function uploadFile (file) {
+        //todo check file extension
 
-
-        //check file size.
+        //todo check file size.
 
         uploader.upload({
             url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
@@ -186,8 +184,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         }).error(function (data, status, headers, config) {
             console.log('error status: ' + status);
         })
-    };
-
+    }
 
     function activate() {
 
@@ -211,7 +208,6 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         $state.go(targetState);
 
         $timeout(function () {
-
             $scope.$broadcast('template-updated', object);
         }, 500);
 
