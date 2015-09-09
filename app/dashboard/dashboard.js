@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', ['st-common', 'highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
+var dashboard = angular.module('dashboard', ['sd-common', 'highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){

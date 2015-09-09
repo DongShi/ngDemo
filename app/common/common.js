@@ -8,8 +8,49 @@
 
 (function () {
     'use strict';
-    angular.module('st-common', []);
+    angular.module('sd-common', []);
 })();
+
+
+
+(function () {
+    'use strict';
+    angular.module('sd-common').factory('optionTemplate', [optionTemplateFn]);
+
+
+
+
+    //////////////////////
+    function optionTemplateFn() {
+        var service = {
+            defaultOptions: _defaultOptions
+        };
+
+        return service;
+        // =============== //
+        function _defaultOptions(optionType) {
+            if (optionType === 'modal') {
+
+                return {
+                    animation: false,
+                    templateUrl: 'fakeUrl',
+                    controller: 'ModalInstanceCtrl',
+                    size: 'lg',
+                    resolve: {
+                    }
+                }
+
+            }  else {
+                console.warn("unsupported option type");
+            }
+        }
+
+    }
+})();
+
+
+
+
 
 
 
@@ -19,7 +60,7 @@
     'use strict';
 
 
-    angular.module('st-common').directive('stTestable',  function() {
+    angular.module('sd-common').directive('stTestable',  function() {
 
       return {
         restrict: 'EA',

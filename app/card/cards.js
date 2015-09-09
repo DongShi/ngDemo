@@ -6,14 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var cardsModule = angular.module('cards', []);
+var cardsModule = angular.module('cards',  ['ui.bootstrap']);
 
 
 
 
 
 
-cardsModule.controller('cardCtrl', ['card.service', function(cardService) {
+cardsModule.controller('cardCtrl', ['card.service', '$modal',  function(cardService, $modal) {
     var vm = this;
 
     vm.cardList = cardService.getAll();
@@ -23,6 +23,7 @@ cardsModule.controller('cardCtrl', ['card.service', function(cardService) {
     vm.deleteCard = _deleteCard;
     vm.updateCard = _updateCard;
     vm.searchCard = _searchCard;
+    vm.tryModal = _tryModal;
     //////////////////////////
 
     function _deleteCard(id) {
@@ -67,6 +68,18 @@ cardsModule.controller('cardCtrl', ['card.service', function(cardService) {
         return -1;
     }
 
+    function _tryModal() {
+        console.log("modal open");
+        $modal.open({
+            animation: true,
+            templateUrl: '/ngDemo/app/card/dataEditor.html',
+            //controller: 'ModalInstanceCtrl',
+            size: 'lg',
+            resolve: {
+            }
+        });
+    }
+
 
 }]);
 
@@ -75,7 +88,7 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
 
       var userId = $stateParams.user || 0;
 
-      var baseURL = '/card/';
+      var baseURL = '/cards/';
       var service = {
 
           get: getCard,
