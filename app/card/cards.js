@@ -11,27 +11,60 @@ var cardsModule = angular.module('cards', []);
 
 
 
+
+
 cardsModule.controller('cardCtrl', ['card.service', function(cardService) {
     var vm = this;
 
     vm.cardList = cardService.getAll();
     vm.maxToShow = 100;
     vm.cardLayout = 'list';
+    vm.addCards = _addCards;
     vm.deleteCard = _deleteCard;
     vm.updateCard = _updateCard;
+    vm.searchCard = _searchCard;
     //////////////////////////
 
-
     function _deleteCard(id) {
+        var idx = findCardById(id);
+        if (idx < 0) {
+            return;
+        }
 
+        cardService.delete(id);
+        vm.cardList.splice(idx, 1);
     }
 
     function _updateCard(id, options) {
+        var idx = findCardById(id);
+        if (idx < 0) {
+            return;
+        }
 
+        var theCard = vm.cardList[idx];
+        cardService.updateCard(id, options);
+        angular.extend(theCard, options);
     }
 
-    function findById(id) {
+    function _addCards(cards) {
+        for (var i = 0; i < cards.length; i++) {
+            var oneCard = cards[i];
+            vm.cardList.addCards(oneCard);
+        }
+    }
 
+    function _searchCard(keyword) {
+        vm.filter = keyword;
+    }
+
+    function findCardById(id) {
+        for (var i = 0; i < vm.cardList.length; i++) {
+            var oneCard = vm.cardList[i];
+            if (oneCard.id === id) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 
@@ -43,7 +76,6 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
       var userId = $stateParams.user || 0;
 
       var baseURL = '/card/';
-      var cardList = [];
       var service = {
 
           get: getCard,
@@ -56,31 +88,74 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
 
     /////////////////////////////
     function getCard(id) {
-        if (id >= 0 && id < cardList.length) {
-            return cardList[id];
-
-        }
+        return ajaxFactory('get', {'id': id});
     }
 
-    function getAllCards() {
+    function getAllCards(userId) {
+        return ajaxFactory('get', {'id': -1});
+    }
 
+    function createCard() {
+        return ajaxFactory('create');
     }
 
     function updateCard(id, options) {
-
+        return ajaxFactory('update', options);
     }
 
-    function deleteCard(idx) {
-        cardList.splice(idx, 1);
+    function deleteCard(id) {
+        return ajaxFactory('delete', {'id': id});
     }
 
     function ajaxFactory(method, options) {
+        var restURL = getRestURL(method);
+        decorateOptions(method, options);
 
+        return $http.post(restURL, options);
+    }
+
+    function getRestURL(actionType) {
+        //todo map action into REST urls.
+        var restURL = baseURL;
+        switch (actionType) {
+            case 'create':
+                break;
+            case 'update':
+                break;
+            case 'delete':
+                break;
+            case 'get':
+                break;
+            default :
+                console.alert("unsupported actions");
+                break;
+
+        }
+
+        return restURL;
+    }
+
+    function decorateOptions(actionType, options) {
+        //todo decorate options.
+        var addOn = {};
+        switch (actionType) {
+            case 'create':
+                break;
+            case 'update':
+                break;
+            case 'delete':
+                break;
+            case 'get':
+                break;
+            default :
+                console.alert("unsupported actions");
+                break;
+        }
+
+        angular.extend(options, addOn);
     }
 
 
+
 }]);
-
-
-
 
