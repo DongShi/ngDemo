@@ -1,5 +1,9 @@
 <div>
     <!--<st-testable on-load = "graphController.tryFunc(spinnerApi, spinnerService)"> heihei </st-testable>-->
+    <select name="repeatSelect" ng-model="graphController.chartConfig.options.chart.type">
+        <option ng-repeat="option in graphController.chartTypes" value="{{option}}">{{option}}</option>
+    </select>
+
 
 
     <highchart id="chart1" config="graphController.chartConfig"></highchart>
