@@ -13,7 +13,7 @@ var cardsModule = angular.module('cards',  ['ui.bootstrap']);
 
 
 
-cardsModule.controller('cardCtrl', ['card.service', '$modal',  function(cardService, $modal) {
+cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', function(cardService, $modal, uploader, $q) {
     var vm = this;
 
     vm.cardList = cardService.getAll();
@@ -23,7 +23,7 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal',  function(cardServ
     vm.deleteCard = _deleteCard;
     vm.updateCard = _updateCard;
     vm.searchCard = _searchCard;
-    vm.tryModal = _tryModal;
+    vm.uploadAndCreate = _callModal;
     //////////////////////////
 
     function _deleteCard(id) {
@@ -68,20 +68,116 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal',  function(cardServ
         return -1;
     }
 
-    function _tryModal() {
+    function _callModal(file) {
+        if (file && !file.$error) {
+            console.log('file uploading');
+            var promise = _uploadFiles(file);
+            promise.then(updateRawCard, function () {
+                console.warn('create failed')
+            });
+        }
+    }
+
+    function updateRawCard(cardId) {
         console.log("modal open");
         $modal.open({
             animation: true,
-            templateUrl: '/ngDemo/app/card/dataEditor.html',
-            //controller: 'ModalInstanceCtrl',
+            templateUrl: '/ngDemo/app/card/card.dataEditor.html',
+            controller: 'cardEditorCtrl',
+            controllerAs: "cardEditor",
             size: 'lg',
             resolve: {
+                rawData: cardService.raw(cardId)
             }
         });
     }
 
 
+    function _uploadFiles(file) {
+        //$scope.f = file;
+        var defer = $q.defer();
+        if (file && !file.$error) {
+            uploader.upload({
+                url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                fields: {'username': 'foo.bar'},
+                file: file
+            }).progress(function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+            }).success(function (data, status, headers, config) {
+                console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                defer.resolve('123');
+            }).error(function (data, status, headers, config) {
+                console.log('error status: ' + status);
+                defer.reject('upload failed');
+            });
+        } else {
+            defer.reject('bad file');
+        }
+
+        return defer.promise;
+    }
 }]);
+
+
+cardsModule.controller('cardEditorCtrl', function ($scope, $modalInstance) {
+
+    var vm = this;
+    vm.ok = function () {
+        $modalInstance.close();
+    };
+
+    vm.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+//{
+//    "comment"
+//:
+//    "action.t, 0: upload, 1: publish, 2: get md, 3: execute template",
+//        "actions"
+//:
+//    {
+//        [
+//            {
+//                "t": 0
+//            },
+//            {
+//                "t": 1,
+//                "column type": ["A", "A", "M", "M"],
+//                "nm": "cube name"
+//            },
+//            {
+//                "t": 2,
+//                "did": "data set id"
+//            },
+//            {
+//                "t": 3,
+//                "did": "data set id",
+//                "template": {
+//                    "comment": ""
+//                    "tid": "template id",
+//                    "ats": [
+//                        {
+//                            "id": "attribute id",
+//                            "fm": "forms",
+//                            "fmt": "format"
+//                        }
+//                    ],
+//                    "mts": [
+//                        {
+//                            "id": "metric id",
+//                            "fmt": "format"
+//                        }
+//                    ]
+//                },
+//                "rst": "grid/graph"
+//            }
+//        ]
+//    }
+//}
 
 
 cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $stateParams) {
@@ -90,7 +186,7 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
 
       var baseURL = '/cards/';
       var service = {
-
+          raw: getRawCard,
           get: getCard,
           update: updateCard,
           delete: deleteCard,
@@ -100,6 +196,20 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
       return service;
 
     /////////////////////////////
+    function getRawCard(id) {
+        //testing testing.
+        var faked = {id: '1234', title: 'abcd', items: [{}, {}, {}]};
+        return faked;
+        //testing testing.
+
+        if (!!id) {
+            return ajaxFactory('get', {'id': id, type : 'column'});
+        }
+
+        var faked = {id: '1234', title: 'abcd', items: [{}, {}, {}]};
+        return faked;
+    }
+
     function getCard(id) {
         return ajaxFactory('get', {'id': id});
     }
@@ -124,7 +234,7 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
         var restURL = getRestURL(method);
         decorateOptions(method, options);
 
-        return $http.post(restURL, options);
+        return $http.post(restURL, options);//.error("http request failed" + method + options);
     }
 
     function getRestURL(actionType) {
@@ -153,12 +263,15 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
         var addOn = {};
         switch (actionType) {
             case 'create':
+                options.t = 0;
                 break;
             case 'update':
+                options.t = 1;
                 break;
             case 'delete':
                 break;
             case 'get':
+                options.t = 2;
                 break;
             default :
                 console.alert("unsupported actions");
