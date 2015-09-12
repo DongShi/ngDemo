@@ -6,8 +6,8 @@
 </div>
 <div class="modal-body">
     <ul>
-        <li ng-repeat="item in items">
-            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+        <li ng-repeat="item in cardEditor.rawData.items track by item.id">
+            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item.title}}</a>
         </li>
     </ul>
     Selected: <b>{{ selected.item }}</b>

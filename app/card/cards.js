@@ -99,7 +99,7 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', fu
         if (file && !file.$error) {
             uploader.upload({
                 url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                fields: {'username': 'foo.bar'},
+                fields: {'username': 'foo.bar', 'command' : 'DICube'},
                 file: file
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -120,9 +120,12 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', fu
 }]);
 
 
-cardsModule.controller('cardEditorCtrl', function ($scope, $modalInstance) {
+cardsModule.controller('cardEditorCtrl', cardEditorCtrl);
+cardEditorCtrl.$inject = ['$scope', '$modalInstance', 'rawData'];
+function cardEditorCtrl($scope, $modalInstance, rawData) {
 
     var vm = this;
+    vm.rawData = rawData;
     vm.ok = function () {
         $modalInstance.close();
     };
@@ -130,7 +133,7 @@ cardsModule.controller('cardEditorCtrl', function ($scope, $modalInstance) {
     vm.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-});
+}
 
 
 //{
@@ -198,7 +201,7 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
     /////////////////////////////
     function getRawCard(id) {
         //testing testing.
-        var faked = {id: '1234', title: 'abcd', items: [{}, {}, {}]};
+        var faked = {id: '1234', title: 'abcd', items: [{'title': 'country', 'type': 'A', 'id': '00001'}, {'title': 'state', 'type': 'A', 'id': '10001'}, {'title': 'population', 'type': 'M', 'id': '00002'}]};
         return faked;
         //testing testing.
 
@@ -280,8 +283,4 @@ cardsModule.factory('card.service', ['$http', '$stateParams', function($http, $s
 
         angular.extend(options, addOn);
     }
-
-
-
 }]);
-
