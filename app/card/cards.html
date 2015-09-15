@@ -1,10 +1,18 @@
 <div ng-controller="cardCtrl as cardCtrl">
 
 <section class="header container-fluid">
-    <!--<div class="btn btn-info btn-primary" ng-click="cardCtrl.tryModal()">添加数据卡片</div>-->
     <button class="btn btn-info btn-primary" type="file" ngf-select="cardCtrl.uploadAndCreate($file)"
             ngf-max-height="1000" ngf-max-size="1MB">
-        添加数据卡片</button>
+        添加数据卡片
+    </button>
+
+    <button class="btn btn-info btn-primary" ng-click="cardCtrl.testModal()">
+        test modal
+    </button>
+
+
+
+
 </section>
 
 <section class="header container-fluid">

@@ -24,6 +24,8 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', fu
     vm.updateCard = _updateCard;
     vm.searchCard = _searchCard;
     vm.uploadAndCreate = _callModal;
+
+    vm.testModal = _testModal;
     //////////////////////////
 
     function _deleteCard(id) {
@@ -68,6 +70,12 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', fu
         return -1;
     }
 
+    function _testModal() {
+        //testing
+        return updateRawCard('123');
+        //testing end.
+    }
+
     function _callModal(file) {
         if (file && !file.$error) {
             console.log('file uploading');
@@ -80,7 +88,7 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', fu
 
     function updateRawCard(cardId) {
         console.log("modal open");
-        $modal.open({
+        return $modal.open({
             animation: true,
             templateUrl: '/ngDemo/app/card/card.dataEditor.html',
             controller: 'cardEditorCtrl',
@@ -93,8 +101,9 @@ cardsModule.controller('cardCtrl', ['card.service', '$modal', 'Upload', '$q', fu
     }
 
 
+
+
     function _uploadFiles(file) {
-        //$scope.f = file;
         var defer = $q.defer();
         if (file && !file.$error) {
             uploader.upload({
@@ -126,6 +135,7 @@ function cardEditorCtrl($scope, $modalInstance, rawData) {
 
     var vm = this;
     vm.rawData = rawData;
+    vm.changeUnitType = _changeUnitType;
     vm.ok = function () {
         $modalInstance.close();
     };
@@ -133,7 +143,15 @@ function cardEditorCtrl($scope, $modalInstance, rawData) {
     vm.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+    ///////////////////////////////////////////
+    function _changeUnitType(item, type) {
+        item.type = type;
+    }
 }
+
+
+
 
 
 //{
