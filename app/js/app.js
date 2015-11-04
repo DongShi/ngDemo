@@ -4,7 +4,7 @@
 //
 
 //demo
-var showcaseApp = angular.module('showcaseApp', ["ui.router", "dashboard"]);
+var showcaseApp = angular.module('showcaseApp', ["ui.router", "dashboard", "cards", "ngFileUpload"]);
 
 //pre-configuration.
 showcaseApp.run(
@@ -34,7 +34,7 @@ showcaseApp.config(  ['$stateProvider', '$urlRouterProvider', function($statePro
         }
     ).state('cards', {
             url : '/cards',
-            template:"Hello cards <a ui-sref='connectors'> go to connectors</a>"
+            templateUrl: '/ngDemo/app/card/cards.html'
         }
     ).state('connectors', {
             url : '/connectors',

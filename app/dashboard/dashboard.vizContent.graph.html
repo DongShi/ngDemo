@@ -1,12 +1,28 @@
 <div>
 
-    <select name="repeatSelect" ng-model="graphController.chartConfig.options.chart.type">
-        <option ng-repeat="option in graphController.chartTypes" value="{{option}}">{{option}}</option>
-    </select>
-
-
-    <st-testable on-load = "graphController.tryFunc(spinnerApi, spinnerService)"> heihei </st-testable>
+    <ul class="list-inline">
+        <li>
+            <label>选择图形种类： </label>
+            <select class="form-control" name="repeatSelect" ng-model="graphController.selectedType" ng-change="graphController.onGraphTypeChanged(graphController.selectedType);">
+                <option ng-repeat="option in graphController.chartTypes" value="{{option}}">{{option}}</option>
+            </select>
+        </li>
+        <li>
+            <button class="btn btn-primary" ng-click = "graphController.animateGraph()" > 展示历史数据</button>
+        </li>
+        <li>
+            <button class="btn btn-primary" ng-click = "graphController.printGraph()" > 打印 </button>
+        </li>
+        <li>
+            <button class="btn btn-primary" ng-click = "graphController.shareGraph()"> 分享 </button>
+        </li>
+    </ul>
 
 
     <highchart id="chart1" config="graphController.chartConfig"></highchart>
 </div>
+
+
+
+
+<!--<st-testable on-load = "graphController.tryFunc(spinnerApi, spinnerService)"> heihei </st-testable>-->

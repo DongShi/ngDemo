@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h3 class="modal-title">请配置数据属性</h3>
+</div>
+
+<div class="modal-body">
+    <ul>
+        <li ng-repeat="item in cardEditor.rawData.items track by item.id">
+
+            {{item.title}}:
+
+            <div class="btn-group" dropdown>
+                <button  type="button" class="btn btn-primary" dropdown-toggle>
+                    {{item.type === 'A' ? '维度' : '指标'}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+                    <li role="menuitem"><a href="#" ng-click="cardEditor.changeUnitType(item, 'A')">维度</a></li>
+                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#" ng-click="cardEditor.changeUnitType(item, 'M')">指标</a></li>
+                </ul>
+            </div>
+
+
+        </li>
+    </ul>
+</div>
+
+
+
+
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="cardEditor.ok()">使用更新</button>
+    <button class="btn btn-warning" type="button" ng-click="cardEditor.cancel()">使用默认值</button>
+</div>
+

@@ -533,3 +533,41 @@ vizTestApp.controller('vizController', ['$scope', function($scope){
 
 }//end of controller
 ]);
+
+
+//cardsModule.directive('parent', function () {
+//    return {
+//        restrict: 'EA',
+//        link: linkFn,
+//        controller: controllerFn
+//
+//    };
+//
+//    function linkFn() {
+//        console.log('parent link called');
+//    }
+//
+//    function controllerFn() {
+//        console.log('parent controller called');
+//    }
+//});
+//
+//
+//
+//
+//cardsModule.directive('child', function () {
+//    return {
+//        restrict: 'EA',
+//        link: linkFn,
+//        controller: controllerFn
+//
+//    };
+//
+//    function linkFn(scope, element, attributes, controller) {
+//        console.log('child link called'+ attributes.id);
+//    }
+//
+//    function controllerFn() {
+//        console.log('child controller called');
+//    }
+//});

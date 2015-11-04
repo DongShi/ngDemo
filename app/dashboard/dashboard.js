@@ -5,7 +5,7 @@
  * Time: 21:09
  * To change this template use File | Settings | File Templates.
  */
-var dashboard = angular.module('dashboard', ['st-common', 'highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
+var dashboard = angular.module('dashboard', ['sd-common', 'highcharts-ng', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.resizeColumns']);
 
 
 dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
@@ -27,8 +27,7 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
     }).state('dashboard.vizContent', {
             abstract: true,
             url: '/dashboard/vizContent',
-            templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.tmpl.html',
-            controller: 'dashboard.vizContentCtl'
+            templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.tmpl.html'
     }).state('dashboard.vizContent.json', {
         url: '/dashboard/vizContent/json',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.json.html',
@@ -37,8 +36,8 @@ dashboard.config( ['$stateProvider', '$urlRouterProvider', function($stateProvid
     }).state('dashboard.vizContent.grid', {
         url: '/dashboard/vizContent/grid',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.grid.html',
-        controller: 'dashboard.vizContentCtl'
-
+        controller: 'dashboard.vizContentCtl',
+        controllerAs: 'gridController'
     }).state('dashboard.vizContent.graph', {
         url: '/dashboard/vizContent/graph',
         templateUrl: '/ngDemo/app/dashboard/dashboard.vizContent.graph.html',
@@ -112,20 +111,14 @@ dashboard.factory('dashboard.data', ['$http', function($http){
 
 }]);
 
-dashboard.factory('dashboard.vizFormat', ['$http', function($http){
-//todo provide default grid/graph settings per type.
-
-}]);
-
-
 
 //this can be consolidated to dashboard.data
 dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function($http, $stateParams) {
 
-     var userId = $stateParams.userId || 0;
+    //var userId = $stateParams.userId || 0;
 
 
-     //just testing for now.
+    //just testing for now.
     var getDataSet = function() {
         //faking faking faking faking faking faking faking faking faking faking faking faking
         var URL = "/ngDemo/app/asset/json/data-template.json";
@@ -145,9 +138,165 @@ dashboard.factory('dashboard.currentDataset', ['$http', '$stateParams', function
 
 
 
+dashboard.factory('dashboard.graphStyle', function() {
+
+    return {
+        'getOptions': _getOptions,
+        'getFormatting': _getFormatting
+    };
+
+     function _getOptions(type, data) {
+
+         var result = {};
+         var defaultABLOptions = {
+             options: {
+                 chart: {
+                     type: 'bar'
+                 }
+             },
+
+             series: [
+                 {data: [10, 15, 12, 8, 7]},
+                 {color: 'red',data: [22, 33, 55, 17, -10]}
+             ],
+
+             title: {
+                text: 'Demo Chart ABL'
+             },
+
+             xAxis: {
+
+                 lineWidth: 1
+             },
+
+
+             yAxis: {
+
+                 lineWidth: 1
+             },
+
+             loading: false
+         };
+
+         var defaultBubbleScatterOptions = {
+             options: {
+                 chart: {
+                     type: 'bubble',
+                     height: 600,
+                     animation: {
+                         duration: 850,
+                         easing: 'linear'
+                     }
+                 }
+             },
+
+             series: [{
+                 data: [
+                     [9, 81, 13],
+                     [98, 5, 39],
+                     [51, 50, 23],
+                     [41, 22, -36],
+                     [58, 24, -30],
+                     [78, 37, -16],
+                     [55, 56, 3],
+                     [18, 45, 20],
+                     [42, 44, -22],
+                     [3, 52, 9],
+                     [31, 18, 47],
+                     [79, 91, 13],
+                     [93, 23, -27],
+                     [44, 83, -28]
+                 ],
+
+                  displayNegative: true,
+                 //negativeColor: Highcharts.getOptions().colors[1]
+                 // zThreshold: 0
+             }]
+             ,
+
+             title: {
+                 text: '金牛瘦狗'
+             },
+
+             xAxis: {
+                 plotLines: [{
+                     color: 'red',
+                     width: 2,
+                     value: 50,
+                     label: {
+                         text: '销售基准线',
+                         style: {
+                             color: 'blue',
+                             fontWeight: 'bold'
+                         }
+                     }
+                 }],
+                 lineWidth: 1,
+                 min: -5,
+                 max: 110
+             },
+
+
+             yAxis: {
+                 plotLines: [{
+                     color: 'red',
+                     width: 2,
+                     value: 55,
+                      label: {
+                          text: '利润基准线',
+                              style: {
+                              color: 'blue',
+                                  fontWeight: 'bold'
+                          }
+                      }
+                 }],
+                 lineWidth: 1,
+                 min : -5,
+                 max : 140
+             },
+
+             loading: false
+         };
+
+         type = angular.lowercase(type);
+         switch (type) {
+             case 'bar':
+             case 'line':
+             case 'area':
+                angular.merge(result, defaultABLOptions);
+                if (data) {
+                    result.series = [data];
+                }
+             break;
+             case 'scatter':
+             case 'bubble' :
+                 angular.merge(result, defaultBubbleScatterOptions);
+                 break;
+             default :
+                 angular.merge(result, defaultABLOptions);
+                 break;
+
+
+         }
+
+         result.options.chart.type = type || 'bar';
+         return result;
+
+
+     }
+
+     function _getFormatting(type) {
+
+     }
+
+});
+
+
+
 
 //controller: dashboard.
-dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', function($scope, dataService, resolvedDataset,  $state, $timeout) {
+dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resolvedDataset',  '$state', '$timeout', '$window', 'Upload',
+    function($scope, dataService, resolvedDataset,  $state, $timeout, $window, uploader) {
 
     var vm = this;
 
@@ -155,17 +304,36 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     vm.displayMode = 'json';
     vm.currrentDatasets = resolvedDataset;
     vm.gridOptions = {data:[], enableColumnResizing: true};
-    vm.updateData = updateFun;
-    vm.graphOptions = {
-        config :{
-
-        }, data : {
-
-        }
-    };
-
-
+    vm.updateData = fetchAllData;
+    vm.updateTemplate = updateTemplate;
+    vm.uploadFile = uploadFile;
     activate();
+    ///////////////////////////////////// the inflame separator///////////////////////////////////////////
+
+    $scope.$watch('upFile', function(){
+        var file = $scope.upFile;
+        file && vm.uploadFile(file);
+    });
+
+
+    function uploadFile (file) {
+        //todo check file extension
+
+        //todo check file size.
+
+        uploader.upload({
+            url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+            fields: {'username': $scope.username},
+            file: file
+        }).progress(function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+        }).success(function (data, status, headers, config) {
+            console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+        }).error(function (data, status, headers, config) {
+            console.log('error status: ' + status);
+        })
+    }
 
     function activate() {
 
@@ -181,13 +349,26 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         }
     }
 
-    //configuration for json/grid/graph.
-    //methods
-    function updateFun(displayMode) {
+    //manipulate data & template
+    function updateTemplate(object) {
+        $window.console.log(object);
+
+        var targetState = "dashboard.vizContent." + vm.displayMode;
+        $state.go(targetState);
+
+        $timeout(function () {
+            $scope.$broadcast('template-updated', object);
+        }, 50);
+
+    }
+
+    function fetchAllData(displayMode) {
+        $window.console.log("fetch all data called");
+        vm.displayMode = displayMode;
 
         //helper functions:
         var URL,
-            parseURL = function(dataType) {
+            parseURL = function (dataType) {
                 //faking faking faking faking faking faking faking faking faking faking faking faking
                 if (displayMode === 'json' || displayMode === 'grid') {
                     return "/ngDemo/app/asset/json/grid-data1.json";
@@ -209,7 +390,7 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
             },
 
             function (response) {
-                $window.log(response);
+                $window.console.log(response);
             }
         ).then(function (data) {
                 vm.displayMode = displayMode;
@@ -221,29 +402,23 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
                         vm.gridOptions.data = vm.jsonData;
                         var columnDefs = [];
                         if (vm.jsonData.length) {
-
-
                             var oneRowData = vm.jsonData[0],
                                 keys = Object.keys(oneRowData);
 
                             for (var i = 0; i < keys.length; i++) {
                                 columnDefs.push({name: keys[i]});
                             }
-
                         }
                         vm.gridOptions.columnDefs = columnDefs;
-                        var targetState = "dashboard.vizContent." + displayMode;
-                        $state.go(targetState);
                     });
                 } else {
-                    if (displayMode === 'graph') {
-                        vm.graphOptions.data = data;
-                    }
-
-                    var targetState = "dashboard.vizContent." + displayMode;
-                    $state.go(targetState);
+                    //todo graph preparation.
                 }
-            });
+
+                var targetState = "dashboard.vizContent." + displayMode;
+                $state.go(targetState);
+            }
+        );
     }
 
 
@@ -251,38 +426,31 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
 
 
 //controller: dashboard -> dashboard.vizContent.
-dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$timeout', function(dataService) {
+dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', 'dashboard.graphStyle', '$scope', '$window', '$interval',
+    function(dataService, graphStyleService, $scope, $window, $interval) {
 
     var vm = this;
 
-    vm.chartTypes = ['bar', 'area', 'line', 'pie'];
-    vm.changeType = changeGraphType;
-    vm.chartConfig = {
-        options: {
-            chart: {
-                type: 'bar'
-            }
-        },
-        series: [{
-            data: [10, 15, 12, 8, 7]
-        },
-            {color: 'red',data: [22, 33, 55, 17, -10]},
-            //{data: [16, -3, 32, 66, 99]}
-        ],
-        title: {
-            text: 'Demo Chart'
-        },
+    vm.chartTypes = ['bar', 'area', 'line', 'pie', 'bubble'];
+    vm.selectedType = 'bar';
+    vm.onGraphTypeChanged = _changeGraphType;
+    vm.animateGraph = _animate;
+    vm.printGraph = _print;
+    vm.shareGraph = _share;
 
-        loading: false
-    };
-
-    vm.tryFunc = tryFunc;
+    $scope.$on('template-updated', templateUpdateHandler);
 
 
-    init(dataService);
+
+    activate(dataService);
 
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
-    function init(dataService) {
+    function activate(dataService) {
+
+        _changeGraphType('bar');
+
+
+
 //        var result = dataService.getData('highCharts');
 //        //vm.chartConfig.options.data = data;
 //
@@ -295,17 +463,118 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', '$state', '$t
 
 
     function tryFunc(spinnerApi, spinnerService) {
-        window.console.log(spinnerApi);
-        window.console.log(spinnerService);
+        $window.console.log(spinnerApi);
+        $window.console.log(spinnerService);
+    }
+
+    /**
+     * notify a template update.
+     * @param index
+     */
+    function updateTemplate(index) {
+
+        var promise = $http.post();
+
+        promise.then().then();
+
+        return promise;
+    }
+
+    function _changeGraphType(type) {
+        type = type || vm.selectedType;
+        var graphStyle = {};
+        if (!!type) {
+            //todo use graphStyleService
+            var graphStyle = graphStyleService.getOptions(type);
+
+
+            //todo combine derived graphStyle
+        }
+
+        vm.chartConfig = graphStyle;
+        return graphStyle;
 
     }
 
+    function templateUpdateHandler(event, obj) {
 
 
-    function changeGraphType(type) {
-        if (!!type) {
-            vm.chartConfig.chartConfig.type = type;
+        $window.console.log('feedback called');
+
+        //$window.console.log(event);
+        //$window.console.log(obj);
+    }
+
+    function _animate() {
+
+        //todo: use ajax to get data from backend.
+        if (!!(vm.chartConfig && vm.chartConfig.series) === false) {
+            return;
+        }
+
+        var trim = function(now, min, max) {
+            now = Math.min(now, max);
+            now = Math.max(now, min);
+            return now;
+        };
+
+        var animateData = function(allData) {
+
+
+            var X = 0, Y = 1, Z = 2,
+                i, sereisData, step = 10;
+
+            for (i in allData) {
+                //[{data: [{x,y,z}, {x, y, z}]}, {data}, {data}]
+                sereisData = allData[i].data;
+                if (!!sereisData === false) {
+                    continue;
+                }
+
+                var rand = Math.random();
+                var signX = rand > 0.6 ? 1 : (rand < 0.3 ? -1 : 0);
+                var signY = rand > 0.4 ? 1 : (rand < 0.2 ? -1 : 0);
+
+                sereisData.forEach(function(e, idx) {
+
+                     var valX = sereisData[idx][X],
+                         valY = sereisData[idx][Y],
+                         valZ = sereisData[idx][Z];
+
+                     sereisData[idx][X] = trim(valX + signX * step, 0, 100);
+                     sereisData[idx][Y] = trim(valY + signY * step, 0, 120);
+                     sereisData[idx][Z] = trim(valZ *(1.5 - rand), 0, 60);
+
+                });
+            }
+
+        }
+
+        var allSeries = vm.chartConfig.series;
+        if (allSeries) {
+            $interval(function() {
+                animateData(allSeries);
+            }, 1000, 40);
+
+        }
+
+
+    }
+
+    function _print() {
+
+        //todo: detect chart status.
+
+        var chartInstance = vm.chartConfig && vm.chartConfig.getHighCharts();
+        if (chartInstance) {
+            chartInstance.print();
         }
     }
+
+    function _share() {
+
+    }
+
+
 
 }]);
