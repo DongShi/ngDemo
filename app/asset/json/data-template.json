@@ -14,7 +14,5 @@
             {"uName":"Customer Gender", "uId": "U345", "axis": "row", "type": "a"},
             {"uName":"Profit", "uId": "U221", "axis": "col", "type": "m"}
         ]
-
-
     }
 ]
