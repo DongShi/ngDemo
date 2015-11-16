@@ -21,7 +21,9 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">数据集合</h3>
                     </div>
+
                     <div class="panel-body">
+
                         {{dashboardController.datasetInfo.name}}
                     </div>
 
@@ -36,7 +38,11 @@
                     </div>
 
 
-                    <div class="list-group" ng-repeat = 'attr in dashboardController.datasetInfo.attrs track by $index'>
+
+                    <div class="list-group" ng-repeat = 'attr in dashboardController.datasetInfo.attrs track by $index'
+                        ng-model="dashboardController.datasetInfo.attrs"
+                         data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}"
+                         jqyoui-draggable="{index: {{$index}}, animate: true, placeholder: 'keep'}">
                         <div class="list-group-item" ng-dblclick="dashboardController.updateTemplate(attr)"> {{attr.uName}} </div>
                     </div>
                 </div>
@@ -54,7 +60,43 @@
             </div>
         </div>
 
-        <div class="viz-panel col-sm-9 col-md-10 col-lg-10" style="display: inline-block; border: dashed 1px #cccccc; float: left">
+        <div class="dropzone-panel col-sm-3 col-md-2 col-lg-2" style="display: inline-block; float: left; max-width: 240px; min-width: 50px">
+
+
+            <div class="dropzone.container" style="height: 100%">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">X-axis</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class = 'placeholder'> drop your unit here </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="dropzone.container" style="height: 100%">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Y-axis</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class = 'placeholder'> drop your unit here </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <div class="viz-panel col-sm-6 col-md-8 col-lg-8" style="display: inline-block; border: dashed 1px #cccccc; float: left">
             <div ui-view> </div>
         </div>
 

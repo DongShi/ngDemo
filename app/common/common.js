@@ -8,14 +8,14 @@
 
 (function () {
     'use strict';
-    angular.module('sd-common', []);
+    angular.module('guan-common', []);
 })();
 
 
 
 (function () {
     'use strict';
-    angular.module('sd-common').factory('optionTemplate', [optionTemplateFn]);
+    angular.module('guan-common').factory('optionTemplate', [optionTemplateFn]);
 
 
 
@@ -49,6 +49,17 @@
 })();
 
 
+//directives for dnd
+(function() {
+    'use strict';
+    angular.module('guan-common').directive('guan-dnd-list', [
+
+
+
+    ]);
+
+
+})();
 
 
 
@@ -60,7 +71,7 @@
     'use strict';
 
 
-    angular.module('sd-common').directive('stTestable',  function() {
+    angular.module('guan-common').directive('stTestable',  function() {
 
       return {
         restrict: 'EA',
