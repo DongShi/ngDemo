@@ -303,10 +303,12 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
     //member variables.
     vm.displayMode = 'json';
     vm.currrentDatasets = resolvedDataset;
-    vm.gridOptions = {data:[], enableColumnResizing: true};
+    vm.gridOptions = {data: [], enableColumnResizing: true};
     vm.updateData = fetchAllData;
     vm.updateTemplate = updateTemplate;
     vm.uploadFile = uploadFile;
+    vm.hidePlaceholder = _hidePlaceholder;
+
     activate();
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
 
@@ -347,7 +349,47 @@ dashboard.controller('dashboard.controller', ['$scope', 'dashboard.data', 'resol
         } else {
             info.attrs = info.metrics = [];
         }
+
+
+        _initDropzones();
     }
+
+    function _hidePlaceholder(key) {
+        if (!!key) {
+            key = key + 'Axis';
+            var dz = vm.dropzones[key];
+            return dz && dz.units && dz.units.length > 0;
+        }
+
+        return false;
+
+    }
+
+    function _initDropzones() {
+
+
+        var zonesId = ['xAxis', 'yAxis'];
+        var zonesNames = ['横轴','纵轴'];
+        var dropzones = vm.dropzones = {
+        };
+
+        //$scope.testlist = ['example1', 'example2'];
+
+        zonesId.forEach(function(ele, idx) {
+            dropzones[ele] = {
+
+                "name": zonesNames[idx],
+                "units": [],
+                "API" : {
+
+                }
+
+            }
+
+        });
+
+    }
+
 
     //manipulate data & template
     function updateTemplate(object) {
@@ -438,29 +480,20 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', 'dashboard.gr
     vm.printGraph = _print;
     vm.shareGraph = _share;
 
+
+
+    //regiester event listeners.
     $scope.$on('template-updated', templateUpdateHandler);
 
-
-
+    //activiation.
     activate(dataService);
 
     ///////////////////////////////////// the inflame separator///////////////////////////////////////////
     function activate(dataService) {
 
-        _changeGraphType('bar');
+       _changeGraphType('bar');
 
-
-
-//        var result = dataService.getData('highCharts');
-//        //vm.chartConfig.options.data = data;
-//
-//
-//
-//        result.forEach(function(ele, idx){
-//            vm.chartConfig.options.series.push({'data': ele});
-//        });
     }
-
 
     function tryFunc(spinnerApi, spinnerService) {
         $window.console.log(spinnerApi);
@@ -484,6 +517,7 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', 'dashboard.gr
         type = type || vm.selectedType;
         var graphStyle = {};
         if (!!type) {
+
             //todo use graphStyleService
             var graphStyle = graphStyleService.getOptions(type);
 
@@ -495,6 +529,8 @@ dashboard.controller('dashboard.vizContentCtl', ['dashboard.data', 'dashboard.gr
         return graphStyle;
 
     }
+
+
 
     function templateUpdateHandler(event, obj) {
 
