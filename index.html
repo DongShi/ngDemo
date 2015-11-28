@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <title>ngDemo Project</title>
 
+    <link href="app/css/jquery-ui.css" rel="stylesheet">
     <link href="app/css/bootstrap.css" rel="stylesheet">
     <link href="app/css/ui-grid.css" rel="stylesheet">
-    <link href="app/css/nv.d3.css" rel="stylesheet">
+    <!--<link href="app/css/nv.d3.css" rel="stylesheet">-->
     <link href="app/css/app.css" rel="stylesheet">
 </head>
 
@@ -37,40 +38,40 @@
                     <li ui-sref-active ='active'><a ui-sref='cards'>个人卡片</a></li>
                     <li ui-sref-active ='active'><a ui-sref='dashboard'>数据图表</a></li>
                     <li ui-sref-active ='active'><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    <!--<li class="dropdown">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="#">Action</a></li>-->
+                            <!--<li><a href="#">Another action</a></li>-->
+                            <!--<li><a href="#">Something else here</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">Separated link</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">One more separated link</a></li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
                 </ul>
 
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                <!--<form class="navbar-form navbar-left" role="search">-->
+                    <!--<div class="form-group">-->
+                        <!--<input type="text" class="form-control" placeholder="Search">-->
+                    <!--</div>-->
+                    <!--<button type="submit" class="btn btn-default">Submit</button>-->
+                <!--</form>-->
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                <!--<ul class="nav navbar-nav navbar-right">-->
+                    <!--<li><a href="#">Link</a></li>-->
+                    <!--<li class="dropdown">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="#">Action</a></li>-->
+                            <!--<li><a href="#">Another action</a></li>-->
+                            <!--<li><a href="#">Something else here</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">Separated link</a></li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -90,11 +91,16 @@
       <!-- $state.$current is not a public api, we are using it to
            display the full url for learning purposes-->
     </pre>
-
 <!--jquery-->
 <script src="lib/jquery.js"></script>
+
+<!--jquery ui-->
+<script src = "lib/jquery-ui.js" ></script>
 <!--angular-->
 <script src="lib/angular.js"></script>
+<!--common: drag and drop-->
+<script src = "lib/angular-dragdrop.js" ></script>
+
 <!--router-->
 <script src="lib/routing/angular-ui-router.js"></script>
 <!--grid-->
@@ -104,20 +110,18 @@
 <script src="lib/highChart/map.src.js"></script>
 
 <!--<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>-->
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-more.js"></script>
-
-
-
+<!--<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>-->
+<!--<<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-more.js"></script>-->
+<<script type="text/javascript" src="lib/highChart//highcharts-more.js"></script>
 <script src="lib/highChart/highcharts-ng.js"></script>
 
 
 
 <!--common: file uploader-->
 <script src = "lib/uploader/ng-file-upload.js" ></script>
+
 <!--ui library-->
 <script src = "lib/bootstrap/ui-bootstrap-tpls-0.13.4.js" ></script>
-
 
 <script src="app/common/common.js"></script>
 
